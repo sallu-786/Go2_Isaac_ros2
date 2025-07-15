@@ -1,0 +1,15 @@
+num_envs: 1
+freq: 40
+camera_follow: true
+env_name: obstacle-dense
+sensor:
+  enable_lidar: true
+  enable_camera: true
+  color_image: true
+  depth_image: true
+  semantic_segmentation: true
+sim_app:
+  anti_aliasing: 0
+  width: 1280
+  height: 720
+  hide_ui: false
