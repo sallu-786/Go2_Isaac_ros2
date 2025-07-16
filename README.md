@@ -79,9 +79,9 @@ The simulation environments and settings can be changed in ```isaac-go2-ros2/cfg
 
 #### Launch different simulation environments
 The current implementation contains a few environments which follows standard Isaac Sim method for importing USD environments(from cloud). To change the environment, please change the ```env_name``` in  ```isaac-go2-ros2/cfg/sim.yaml```. Current available environments:
-- ```warehouse```: A simple warehouse environment in Isaac Sim. (for further options in warehouse category, change path value in **_create_warehouse_env()_** function inside ```env/sim_env.py```)
-- ```obstacle```: An obstacle field environment.  (change value of variable **_num_obstacles_** inside ```env/sim_env.py``` to make it dense or sparse)
-- ```terrain```: A Terrain environment in Isaac Sim. (for further options in terrain category, change path value in **_create_terrain_env()_** function inside ```env/sim_env.py```)
+- ```warehouse```: A simple warehouse environment in Isaac Sim. (for further options in warehouse category, change path value in ```**_create_warehouse_env()_**``` function inside ```env/sim_env.py```)
+- ```obstacle```: An obstacle field environment.  (change value of variable ```**_num_obstacles_**``` inside ```env/sim_env.py``` to make it dense or sparse)
+- ```terrain```: A Terrain environment in Isaac Sim. (for further options in terrain category, change path value in ```**_create_terrain_env()_**``` function inside ```env/sim_env.py```)
 - ```office```
 - ```hospital```
 - ```rivermark```
