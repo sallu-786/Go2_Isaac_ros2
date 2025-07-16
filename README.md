@@ -1,58 +1,58 @@
 #  Isaac Sim Unitree Go2 ROS2
 [![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://docs.python.org/3/whatsnew/3.10.html)
 [![ROS2](https://img.shields.io/badge/ROS2-Humble-orange.svg)](https://docs.ros.org/en/humble/index.html)
-[![IsaacSim](https://img.shields.io/badge/IsaacSim-4.2.0-red.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
-[![IsaacLab](https://img.shields.io/badge/IsaacLab-1.2.0-purple.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
+[![IsaacSim](https://img.shields.io/badge/IsaacSim-4.5.0-red.svg)](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/index.html)
+[![IsaacLab](https://img.shields.io/badge/IsaacLab-2.1.0-purple.svg)](https://isaac-sim.github.io/IsaacLab/main/index.html)
 [![Linux platform](https://img.shields.io/badge/platform-Ubuntu--22.04-green.svg)](https://releases.ubuntu.com/22.04/)
 
-Welcome to the Isaac Sim Unitree Go2 repository! This repository provides a Unitree Go2 quadruped robot simulation, leveraging the Isaac Sim/Isaac Lab framework and integrating seamlessly with a ROS 2 interface. It offers a flexible platform for testing navigation, decision-making, and other autonomous tasks in various scenarios.
-
+Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2.1.0). This repository has been updated to make use of latest Nvidia libraries using [Migration Guide](https://isaac-sim.github.io/IsaacLab/main/source/migration/migrating_from_orbit.html) and tested on multiple devices. 
 
 <table>
   <tr>
-    <td><img src="media/sim-demo1.gif" style="width: 100%;"></td>
     <td><img src="media/sim-demo2.gif" style="width: 100%;"></td>
   </tr>
 </table>
 
-IsaacSim 4.5 is now supported. Please check the ```isaacsim-4.5``` branch for details.
 
-## Installation Guide
-**Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/binaries_installation.html) to install the Isaac Sim 4.2.0 and Isaac Lab 1.2.0.
+## 1. Installation Guide
+**Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html) to install the latest Isaac Sim and Isaac Lab
 
 **Step II:** Please install [ROS2 Humble](https://docs.ros.org/en/humble/index.html) with the official installation guide.
 
-**Step III:** Install the prerequisite C extension in the conda environment. [reference link](https://stackoverflow.com/questions/58424974/anaconda-importerror-usr-lib64-libstdc-so-6-version-glibcxx-3-4-21-not-fo)
+**Step III:** Install the prerequisite C extension in the conda environment.
 ```
-# default conda env for Isaac Lab
-conda activate isaaclab      
+# Assuming you are using default conda env name from IsaacLab (env_isaaclab)
+conda activate env_isaaclab     
 conda install -c conda-forge libstdcxx-ng
 ```
 
 **Step IV:** Clone this repo to your local directory.
 ```
-git clone https://github.com/Zhefan-Xu/isaac-go2-ros2.git
+git clone https://github.com/sallu-786/Go2_Isaac_ros2/
 ```
 
 ## Run Unitree Go2 Simulation 
 To run the simulation, please use the following command:
 ```
-conda activate isaaclab
-python isaac_go2_ros2.py
+cd ~/Go2_Isaac_ros2
+python main.py
 ```
 Once the simulation is loaded, the robot can be teleoperated by the keyboard:
 
 ```W```: Forward, ```A```: Left, ```S```: Backward, ```D```: Right, ```Z```: Left Turn, ```C```: Right Turn.
 
+To set your own custom keys make changes in ```go2/go2_ctrl.py``` 
 
 https://github.com/user-attachments/assets/7abb41fd-26f7-4e5d-bc7f-98ee10467a6a
 
 
-## ROS2 Topics and Visualization
-After launching the simulation, the ROS2 data can be visualized in ```Rviz2```:
+## 2. ROS2 Topics and Visualization
+After launching the simulation, Open a new terminal and visualize the ROS2 data in ```Rviz2```:
 ```
-rviz2 -d /path/to/isaac-go2-ros2/rviz/go2.rviz
+cd ~/Go2_Isaac_ros2/rviz/
+rviz2
 ```
+If you dont see anything click add button and from topic list select topic you want to visualize. For example to view camera image ```Add-->Camera-->Image
 ![rviz](https://github.com/user-attachments/assets/946b6a31-b52a-4153-b337-846087fc2b7d)
 
 Here is a categorized list of ROS 2 topics available for the Unitree Go2:
@@ -74,19 +74,31 @@ Here is a categorized list of ROS 2 topics available for the Unitree Go2:
 - `/unitree_go2/pose`:  Publishes the current pose of the robot in the world frame.
 
 
-## Simulation Environments & settings
+## 3. Simulation Environments & settings
 The simulation environments and settings can be changed in ```isaac-go2-ros2/cfg/sim.yaml``` config file. 
 
 #### Launch different simulation environments
-The current implementation contains a few environments which can be found on ```isaac-go2-ros2/env/sim_env.py```, which follows standard Isaac Sim method for importing USD environments. To change the environment, please change the ```env_name``` in the config file ```isaac-go2-ros2/cfg/sim.yaml```. Current available environments:
-- ```warehouse```: A simple warehouse environment in Isaac Sim.
-- ```warehouse-forklifts```: A warehouse environment with forklifts.
-- ```warehouse-shelves```: A warehouse environment with shelves.
-- ```full-warehouse```: A full warehouse environment containing everything.
-- ```obstacle-sparse```: A sparse obstacle field environment.
-- ```obstacle-medium```: A  medium obstacle field environment.
-- ```obstacle-dense```: A dense obstacle field environment.
+The current implementation contains a few environments which follows standard Isaac Sim method for importing USD environments(from cloud). To change the environment, please change the ```env_name``` in  ```isaac-go2-ros2/cfg/sim.yaml```. Current available environments:
+- ```warehouse```: A simple warehouse environment in Isaac Sim. (for further options in warehouse category, change path value in **create_warehouse_env()** function inside ```env/sim_env.py```)
+- ```obstacle```: An obstacle field environment.  (change value of variable **num_obstacles** inside ```env/sim_env.py``` to make it dense or sparse)
+- ```terrain```: A Terrain environment in Isaac Sim. (for further options in terrain category, change path value in **create_terrain_env()** function inside ```env/sim_env.py```)
+- ```office```
+- ```hospital```
+- ```rivermark```
 
+As of now there are 70 environments assets available in isaac-sim 4.5.0. see more at Environment Assets(https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html)
+  
+#### Launch different Policy/Algorithms 
+To Launch Policy other than default (```ActorCritic```), go to```go2/go2_ctrl_cfg.py``` and use any of the following values 
+  - ```ActorCriticRecurrent```
+  - ```StudentTeacher```
+  - ```StudentTeacherRecurrent```
+
+Algorithm by default is ```PPO``` you may also use ```Distillation```. For compatibility check and more details, please visit [API_docs](https://isaac-sim.github.io/IsaacLab/main/source/api/lab_rl/isaaclab_rl.html)
+
+**Load custom checkpoints**
+
+Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitee_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in ```go2/go2_ctrl_cfg.py```.
 
 #### Launch multiple robots in the environment
 This repository supports running multiple Unitree Go2 robots and the number of robots can by changed by the ```num_envs``` parameter in the config file ```isaac-go2-ros2/cfg/sim.yaml```. The following shows an example video.
@@ -94,18 +106,12 @@ This repository supports running multiple Unitree Go2 robots and the number of r
 https://github.com/user-attachments/assets/47ef05c1-5124-4feb-afc8-a3f2c306a212
 
 
-
-
-## Example Usage
+## 4. Example Usage
 The video shows an example of using this repo with an [RL agent](https://github.com/Zhefan-Xu/NavRL) to achieve navigation and collision avoidance:
 
 
 https://github.com/user-attachments/assets/ccc986c6-bf94-41fe-a4d5-3417ce8b3384
 
-## Acknowledgement
+## 5. Acknowledgement
+Repository is mainly built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2)
 The Go2 controller is based on the RL controller implemented in [go2_omniverse](https://github.com/abizovnuralem/go2_omniverse).
-
-
-
-
-

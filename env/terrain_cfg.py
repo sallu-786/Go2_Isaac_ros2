@@ -21,3 +21,10 @@ class HfUniformDiscreteObstaclesTerrainCfg(HfTerrainBaseCfg):
     platform_width: float = 1.0
     """The width of the square platform at the center of the terrain. Defaults to 1.0."""
     avoid_positions: list[list[float, float]] = []
+    add_stairs: bool = True
+    """Whether to add stair features to the terrain."""
+    add_slope: bool = True
+    """Whether to add a sloped feature to the terrain."""
+
+
+

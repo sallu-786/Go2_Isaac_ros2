@@ -34,7 +34,7 @@ unitree_go2_flat_cfg = {
     'wandb_project': 'isaaclab',
     'resume': False,
     'load_run': 'unitree_go2',
-    'load_checkpoint': 'flat_model_6800.pt'
+    'load_checkpoint': 'flat_model_6800.pt'    #Add your own flat terrain policy here
 }
 
 unitree_go2_rough_cfg = {
@@ -73,5 +73,5 @@ unitree_go2_rough_cfg = {
         'wandb_project': 'orbit', 
         'resume': False, 
         'load_run': 'unitree_go2', 
-        'load_checkpoint': 'rough_model_7850.pt'
+        'load_checkpoint': 'rough_model_7850.pt'       #Add your own rough terrain policy here
 }

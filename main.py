@@ -41,24 +41,29 @@ def run_simulator(cfg):
     go2_env_cfg.decimation = math.ceil(1./go2_env_cfg.sim.dt/cfg.freq)
     go2_env_cfg.sim.render_interval = go2_env_cfg.decimation
     go2_ctrl.init_base_vel_cmd(cfg.num_envs)
-    env, policy = go2_ctrl.get_rsl_flat_policy(go2_env_cfg)
-    # env, policy = go2_ctrl.get_rsl_rough_policy(go2_env_cfg)--------------------------------
+    # env, policy = go2_ctrl.get_rsl_flat_policy(go2_env_cfg)
+    env, policy = go2_ctrl.get_rsl_rough_policy(go2_env_cfg)      #--------------------------------Run rough terrain policy
 
     # Simulation environment
-    if (cfg.env_name == "obstacle-dense"):
-        sim_env.create_obstacle_dense_env() # obstacles dense
-    elif (cfg.env_name == "obstacle-medium"):
-        sim_env.create_obstacle_medium_env() # obstacles medium
-    elif (cfg.env_name == "obstacle-sparse"):
-        sim_env.create_obstacle_sparse_env() # obstacles sparse
+    if (cfg.env_name == "obstacle"):
+        sim_env.create_obstacle_env() # obstacles
+
     elif (cfg.env_name == "warehouse"):
         sim_env.create_warehouse_env() # warehouse
-    elif (cfg.env_name == "warehouse-forklifts"):
-        sim_env.create_warehouse_forklifts_env() # warehouse forklifts
-    elif (cfg.env_name == "warehouse-shelves"):
-        sim_env.create_warehouse_shelves_env() # warehouse shelves
-    elif (cfg.env_name == "full-warehouse"):
-        sim_env.create_full_warehouse_env() # full warehouse
+
+    elif (cfg.env_name == "office"):
+        sim_env.create_office_env() # office
+    
+    elif (cfg.env_name == "hospital"):
+        sim_env.create_hospital_env() # hospital
+    
+    elif (cfg.env_name == "rivermark"):
+        sim_env.create_rivermark_env() # rivermark
+
+    elif (cfg.env_name == "terrain"):
+        sim_env.create_terrain_env() # terrain
+
+    
 
     # Sensor setup
     sm = go2_sensors.SensorManager(cfg.num_envs)

@@ -14,7 +14,7 @@ def add_semantic_label():
     # Add a semantic label
         rep.modify.semantics([("class", "floor")])
 
-def create_obstacle_sparse_env():
+def create_obstacle_env():
     add_semantic_label()
     # Terrain
     terrain = TerrainImporterCfg(
@@ -29,7 +29,7 @@ def create_obstacle_sparse_env():
                 size=(50, 50),
                 obstacle_width_range=(0.5, 1.0),
                 obstacle_height_range=(1.0, 2.0),
-                num_obstacles=100 ,
+                num_obstacles=100 ,                   #use 200,400 to add more obstacles or 0 for plane env--------------------
                 obstacles_distance=2.0,
                 border_width=5,
                 avoid_positions=[[0, 0]]
@@ -39,87 +39,13 @@ def create_obstacle_sparse_env():
     )
     TerrainImporter(terrain) 
 
-def create_obstacle_medium_env():
-    add_semantic_label()
-    # Terrain
-    terrain = TerrainImporterCfg(
-        prim_path="/World/obstacleTerrain",
-        terrain_type="generator",
-        terrain_generator=TerrainGeneratorCfg(
-            seed=0,
-            size=(50, 50),
-            color_scheme="height",
-            sub_terrains={"t1": HfUniformDiscreteObstaclesTerrainCfg(
-                seed=0,
-                size=(50, 50),
-                obstacle_width_range=(0.5, 1.0),
-                obstacle_height_range=(1.0, 2.0),
-                num_obstacles=200 ,
-                obstacles_distance=2.0,
-                border_width=5,
-                avoid_positions=[[0, 0]]
-            )},
-        ),
-        visual_material=None,     
-    )
-    TerrainImporter(terrain) 
-
-
-def create_obstacle_dense_env():
-    add_semantic_label()
-    # Terrain
-    terrain = TerrainImporterCfg(
-        prim_path="/World/obstacleTerrain",
-        terrain_type="generator",
-        terrain_generator=TerrainGeneratorCfg(
-            seed=0,
-            size=(50, 50),
-            color_scheme="height",
-            sub_terrains={"t1": HfUniformDiscreteObstaclesTerrainCfg(
-                seed=0,
-                size=(50, 50),
-                obstacle_width_range=(0.5, 1.0),
-                obstacle_height_range=(1.0, 2.0),
-                num_obstacles=400,
-                obstacles_distance=2.0,
-                border_width=5,
-                avoid_positions=[[0, 0]]
-            )},
-        ),
-        visual_material=None,     
-    )
-    TerrainImporter(terrain) 
 
 def create_warehouse_env():
     add_semantic_label()
     assets_root_path = nucleus_utils.get_assets_root_path()
     prim = get_prim_at_path("/World/Warehouse")
     prim = define_prim("/World/Warehouse", "Xform")
-    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/warehouse.usd"
-    prim.GetReferences().AddReference(asset_path)
-
-def create_warehouse_forklifts_env():
-    add_semantic_label()
-    assets_root_path = nucleus_utils.get_assets_root_path()
-    prim = get_prim_at_path("/World/Warehouse")
-    prim = define_prim("/World/Warehouse", "Xform")
-    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/warehouse_with_forklifts.usd"
-    prim.GetReferences().AddReference(asset_path)
-
-def create_warehouse_shelves_env():
-    add_semantic_label()
-    assets_root_path = nucleus_utils.get_assets_root_path()
-    prim = get_prim_at_path("/World/Warehouse")
-    prim = define_prim("/World/Warehouse", "Xform")
-    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/warehouse_multiple_shelves.usd"
-    prim.GetReferences().AddReference(asset_path)
-
-def create_full_warehouse_env():
-    add_semantic_label()
-    assets_root_path = nucleus_utils.get_assets_root_path()
-    prim = get_prim_at_path("/World/Warehouse")
-    prim = define_prim("/World/Warehouse", "Xform")
-    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/full_warehouse.usd"
+    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/warehouse.usd"     #also--> full_warehouse.usd,, warehouse_with_forklifts.usd ,, warehouse_multiple_shelves.usd
     prim.GetReferences().AddReference(asset_path)
 
 def create_hospital_env():
@@ -137,3 +63,25 @@ def create_office_env():
     prim = define_prim("/World/Office", "Xform")
     asset_path = assets_root_path+"/Isaac/Environments/Office/office.usd"
     prim.GetReferences().AddReference(asset_path)
+
+def create_rivermark_env():
+    add_semantic_label()
+    assets_root_path = nucleus_utils.get_assets_root_path()
+    prim = get_prim_at_path("/World/Outdoor")
+    prim = define_prim("/World/Outdoor", "Xform")
+    asset_path = assets_root_path+"/Isaac/Environments/Outdoor/Rivermark/rivermark.usd"
+    prim.GetReferences().AddReference(asset_path)
+
+def create_terrain_env():
+    add_semantic_label()
+    assets_root_path = nucleus_utils.get_assets_root_path()
+    prim = get_prim_at_path("/World/Terrains")
+    prim = define_prim("/World/Terrains", "Xform")
+    asset_path = assets_root_path+"/Isaac/Environments/Terrains/slope.usd"      #also--> rough_plane.usd,, stairs.usd,, slope.usd
+    prim.GetReferences().AddReference(asset_path)
+
+
+
+
+
+

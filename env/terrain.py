@@ -77,3 +77,4 @@ def uniform_discrete_obstacles_terrain(difficulty: float, cfg) -> np.ndarray:
     # round off the heights to the nearest vertical step
     return np.rint(hf_raw).astype(np.int16)
 
+
