@@ -86,7 +86,7 @@ The current implementation contains a few environments which follows standard Is
 - ```hospital```
 - ```rivermark```
 
-As of now there are 70 environments assets available in isaac-sim 4.5.0. see more at Environment Assets(https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html)
+As of now there are 70 environments assets available in isaac-sim 4.5.0. see more at [Environment Assets](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html)
   
 #### Launch different Policy/Algorithms 
 To Launch Policy other than default (```ActorCritic```), go to```go2/go2_ctrl_cfg.py``` and use any of the following values 
