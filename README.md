@@ -31,7 +31,7 @@ conda install -c conda-forge libstdcxx-ng
 git clone https://github.com/sallu-786/Go2_Isaac_ros2/
 ```
 
-## Run Unitree Go2 Simulation 
+## 2. Run Unitree Go2 Simulation 
 To run the simulation, please use the following command:
 ```
 cd ~/Go2_Isaac_ros2
@@ -46,7 +46,7 @@ To set your own custom keys make changes in ```go2/go2_ctrl.py```
 https://github.com/user-attachments/assets/7abb41fd-26f7-4e5d-bc7f-98ee10467a6a
 
 
-## 2. ROS2 Topics and Visualization
+## 3. ROS2 Topics and Visualization
 After launching the simulation, Open a new terminal and visualize the ROS2 data in ```Rviz2```:
 ```
 cd ~/Go2_Isaac_ros2/rviz/
@@ -74,7 +74,7 @@ Here is a categorized list of ROS 2 topics available for the Unitree Go2:
 - `/unitree_go2/pose`:  Publishes the current pose of the robot in the world frame.
 
 
-## 3. Simulation Environments & settings
+## 4. Simulation Environments & settings
 The simulation environments and settings can be changed in ```isaac-go2-ros2/cfg/sim.yaml``` config file. 
 
 #### Launch different simulation environments
@@ -106,12 +106,12 @@ This repository supports running multiple Unitree Go2 robots and the number of r
 https://github.com/user-attachments/assets/47ef05c1-5124-4feb-afc8-a3f2c306a212
 
 
-## 4. Example Usage
+## 5. Example Usage
 The video shows an example of using this repo with an [RL agent](https://github.com/Zhefan-Xu/NavRL) to achieve navigation and collision avoidance:
 
 
 https://github.com/user-attachments/assets/ccc986c6-bf94-41fe-a4d5-3417ce8b3384
 
-## 5. Acknowledgement
+## 6. Acknowledgement
 Repository is mainly built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2)
 The Go2 controller is based on the RL controller implemented in [go2_omniverse](https://github.com/abizovnuralem/go2_omniverse).
