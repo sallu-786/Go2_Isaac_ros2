@@ -113,5 +113,5 @@ The video shows an example of using this repo with an [RL agent](https://github.
 https://github.com/user-attachments/assets/ccc986c6-bf94-41fe-a4d5-3417ce8b3384
 
 ## 6. Acknowledgement
-Repository is mainly built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2)
+Repository is built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2) Major credit goes to him
 The Go2 controller is based on the RL controller implemented in [go2_omniverse](https://github.com/abizovnuralem/go2_omniverse).
