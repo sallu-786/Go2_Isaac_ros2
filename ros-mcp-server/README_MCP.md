@@ -94,7 +94,7 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 ![rosbridge server launch](<img/rosbridge.png>)
 
 ### 3. Run ```main.py``` 
-Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>)```cfg/sim.yaml``` has same value as ```NUM_ENVS``` in [server.py](<server.py>)```server.py```
+Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has same value as ```NUM_ENVS``` in [server.py](<server.py>)
 
 
 ### 4. Launch Claude Desktop
