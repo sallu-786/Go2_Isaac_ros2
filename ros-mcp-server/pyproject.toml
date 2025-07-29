@@ -1,0 +1,13 @@
+[project]
+name = "ros-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.6.0",
+    "opencv-python>=4.11.0.86",
+    "websocket>=0.2.1",
+    "websocket-client>=1.8.0",
+    "pyyaml",
+]
