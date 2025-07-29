@@ -14,9 +14,8 @@ class SensorManager:
         for env_idx in range(self.num_envs):
             _, sensor = omni.kit.commands.execute(
                 "IsaacSensorCreateRtxLidar",
-                path="/lidar",
+                path=f"/unitree_go2_{env_idx}/lidar",  
                 parent=f"/World/envs/env_{env_idx}/Go2/base",
-                # config="Hesai_XT32_SD10",
                 config="Velodyne_VLS128",
                 translation=(0.2, 0, 0.2),
                 orientation=Gf.Quatd(1.0, 0.0, 0.0, 0.0),  # Gf.Quatd is w,i,j,k
@@ -35,8 +34,8 @@ class SensorManager:
                 prim_path=f"/World/envs/env_{env_idx}/Go2/base/front_cam",
                 translation=np.array([0.4, 0.0, 0.2]),
                 frequency=freq,
-                # resolution=(640, 480),
-                resolution=(1280,720),
+                resolution=(640, 480),
+                # resolution=(1280,720),
                 orientation=rot_utils.euler_angles_to_quats(np.array([0, 0, 0]), degrees=True),
             )
             camera.initialize()

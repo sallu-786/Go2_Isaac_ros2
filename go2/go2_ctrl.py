@@ -23,10 +23,9 @@ def base_vel_cmd(env: ManagerBasedEnv) -> torch.Tensor:
 # Update sub_keyboard_event to modify specific rows of the tensor based on key inputs
 def sub_keyboard_event(event) -> bool:
     global base_vel_cmd_input
-    # lin_vel = 1.5 for 40 freq
-    # ang_vel = 1.5 for 40 freq
-    lin_vel=1.0  # for 50 freq
-    ang_vel=1.0  # for 50 freq
+
+    lin_vel=1.0  # stable for 50 freq
+    ang_vel=1.0  # stable for 50 freq
     
     if base_vel_cmd_input is not None:
         if event.type == carb.input.KeyboardEventType.KEY_PRESS:

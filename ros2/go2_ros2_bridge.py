@@ -16,6 +16,11 @@ import omni.syntheticdata._syntheticdata as sd
 import subprocess
 import time
 import go2.go2_ctrl as go2_ctrl
+#For YOLO detection
+from ultralytics import YOLO
+from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose, \
+    BoundingBox2D, Pose2D
+from visualization_msgs.msg import MarkerArray, Marker
 
 ext_manager = omni.kit.app.get_app().get_extension_manager()
 ext_manager.set_extension_enabled_immediate("omni.isaac.ros2_bridge", True)
@@ -36,6 +41,9 @@ class RobotDataManager(Node):
         self.lidar_annotators = lidar_annotators
         self.cameras = cameras
         self.points = []
+        self.step_size = 1
+        self.node_namespace = ""         
+        self.queue_size = 1
         
         # ROS2 Broadcaster
         self.broadcaster= TransformBroadcaster(self)
@@ -45,54 +53,48 @@ class RobotDataManager(Node):
         self.pose_pub = []
         self.lidar_pub = []
         self.semantic_seg_img_vis_pub = []
+        self.det_pub = []
+        self.vis_pub = []
+        self.marker_pub = []
 
         # ROS2 Subscriber
         self.cmd_vel_sub = []
         self.color_img_sub = []
         self.depth_img_sub = []
         self.semantic_seg_img_sub = []
+        self.image_sub = []
 
         # ROS2 Timer
         self.lidar_publish_timer = []
+        
+        
         for i in range(self.num_envs):
-            if (self.num_envs == 1):
-                self.odom_pub.append(
-                    self.create_publisher(Odometry, "unitree_go2/odom", 10))
-                self.pose_pub.append(
-                    self.create_publisher(PoseStamped, "unitree_go2/pose", 10))
-                self.lidar_pub.append(
-                    self.create_publisher(PointCloud2, "unitree_go2/lidar/point_cloud", 10)
-                )
-                self.semantic_seg_img_vis_pub.append(
-                    self.create_publisher(Image, "unitree_go2/front_cam/semantic_segmentation_image_vis", 10)
-                )
-                self.cmd_vel_sub.append(
-                    self.create_subscription(Twist, "unitree_go2/cmd_vel", 
-                    lambda msg: self.cmd_vel_callback(msg, 0), 10)
-                )
-                self.semantic_seg_img_sub.append(
-                    self.create_subscription(Image, "/unitree_go2/front_cam/semantic_segmentation_image", 
-                    lambda msg: self.semantic_segmentation_callback(msg, 0), 10)
-                )
-            else:
-                self.odom_pub.append(
-                    self.create_publisher(Odometry, f"unitree_go2_{i}/odom", 10))
-                self.pose_pub.append(
-                    self.create_publisher(PoseStamped, f"unitree_go2_{i}/pose", 10))
-                self.lidar_pub.append(
-                    self.create_publisher(PointCloud2, f"unitree_go2_{i}/lidar/point_cloud", 10)
-                )
-                self.semantic_seg_img_vis_pub.append(
-                    self.create_publisher(Image, f"unitree_go2_{i}/front_cam/semantic_segmentation_image_vis", 10)
-                )
-                self.cmd_vel_sub.append(
-                    self.create_subscription(Twist, f"unitree_go2_{i}/cmd_vel", 
-                    lambda msg, env_idx=i: self.cmd_vel_callback(msg, env_idx), 10)
-                )
-                self.semantic_seg_img_sub.append(
-                    self.create_subscription(Image, f"/unitree_go2_{i}/front_cam/semantic_segmentation_image", 
-                    lambda msg, env_idx=i: self.semantic_segmentation_callback(msg, env_idx), 10)
-                )
+            prefix= f"unitree_go2_{i}"
+            
+            self.odom_pub.append(self.create_publisher(Odometry, f"{prefix}/odom", 10))
+            self.pose_pub.append(self.create_publisher(PoseStamped, f"{prefix}/pose", 10))
+            self.lidar_pub.append(self.create_publisher(PointCloud2, 
+                                                        f"{prefix}/lidar/point_cloud", 10))
+            # Publishers for Yolo detections and visualization
+            self.det_pub.append(self.create_publisher(Detection2DArray, 
+                                    f"{prefix}/front_cam/detections",10))
+            self.vis_pub.append(self.create_publisher(Image, 
+                                    f"{prefix}/front_cam/detection_image", 10))
+            self.marker_pub.append(self.create_publisher(MarkerArray,
+                                    f"{prefix}/front_cam/detection_markers",10))
+            # For semantic segmentation visualization
+            self.semantic_seg_img_vis_pub.append(self.create_publisher(Image, 
+                        f"{prefix}/front_cam/semantic_segmentation_image_vis", 10))
+            
+            self.cmd_vel_sub.append(self.create_subscription(Twist, f"{prefix}/cmd_vel", 
+                    lambda msg, idx=i: self.cmd_vel_callback(msg, idx), 10))
+            #For yolo
+            self.image_sub.append(self.create_subscription(Image, f"{prefix}/front_cam/color_image",
+                lambda msg, idx=i: self.image_callback(msg, idx), 10))
+            
+            self.semantic_seg_img_sub.append(self.create_subscription(Image, 
+                    f"{prefix}/front_cam/semantic_segmentation_image", 
+                    lambda msg, idx=i: self.semantic_segmentation_callback(msg, idx), 10))
         
         # self.create_timer(0.1, self.pub_ros2_data_callback)
         # self.create_timer(0.1, self.pub_lidar_data_callback)
@@ -104,6 +106,10 @@ class RobotDataManager(Node):
         self.lidar_pub_time = time.time() 
         self.create_static_transform()
         self.create_camera_publisher()  
+
+        # YOLO setup
+        self.bridge = CvBridge()
+        self.model = YOLO('yolo/yolov8n.pt')  # model path
 
  
     def create_ros_time_graph(self):
@@ -146,12 +152,8 @@ class RobotDataManager(Node):
             lidar_broadcaster = StaticTransformBroadcaster(self)
             base_lidar_transform = TransformStamped()
             base_lidar_transform.header.stamp = self.get_clock().now().to_msg()
-            if (self.num_envs == 1):
-                base_lidar_transform.header.frame_id = "unitree_go2/base_link"
-                base_lidar_transform.child_frame_id = "unitree_go2/lidar_frame"
-            else:
-                base_lidar_transform.header.frame_id = f"unitree_go2_{i}/base_link"
-                base_lidar_transform.child_frame_id = f"unitree_go2_{i}/lidar_frame"
+            base_lidar_transform.header.frame_id = f"unitree_go2_{i}/base_link"
+            base_lidar_transform.child_frame_id = f"unitree_go2_{i}/lidar_frame"
 
             # Translation
             base_lidar_transform.transform.translation.x = 0.2
@@ -173,12 +175,8 @@ class RobotDataManager(Node):
             camera_broadcaster = StaticTransformBroadcaster(self)
             base_cam_transform = TransformStamped()
             # base_cam_transform.header.stamp = self.get_clock().now().to_msg()
-            if (self.num_envs == 1):
-                base_cam_transform.header.frame_id = "unitree_go2/base_link"
-                base_cam_transform.child_frame_id = "unitree_go2/front_cam"
-            else:
-                base_cam_transform.header.frame_id = f"unitree_go2_{i}/base_link"
-                base_cam_transform.child_frame_id = f"unitree_go2_{i}/front_cam"
+            base_cam_transform.header.frame_id = f"unitree_go2_{i}/base_link"
+            base_cam_transform.child_frame_id = f"unitree_go2_{i}/front_cam"
 
             # Translation
             base_cam_transform.transform.translation.x = 0.4
@@ -210,10 +208,7 @@ class RobotDataManager(Node):
         odom_msg = Odometry()
         odom_msg.header.stamp = self.get_clock().now().to_msg()
         odom_msg.header.frame_id = "map"
-        if (self.num_envs == 1):
-            odom_msg.child_frame_id = "base_link"
-        else:
-            odom_msg.child_frame_id = f"unitree_go2_{env_idx}/base_link"
+        odom_msg.child_frame_id = f"unitree_go2_{env_idx}/base_link"
         odom_msg.pose.pose.position.x = base_pos[0].item()
         odom_msg.pose.pose.position.y = base_pos[1].item()
         odom_msg.pose.pose.position.z = base_pos[2].item()
@@ -233,10 +228,7 @@ class RobotDataManager(Node):
         map_base_trans = TransformStamped()
         map_base_trans.header.stamp = self.get_clock().now().to_msg()
         map_base_trans.header.frame_id = "map"
-        if (self.num_envs == 1):
-            map_base_trans.child_frame_id = "unitree_go2/base_link"
-        else:
-            map_base_trans.child_frame_id = f"unitree_go2_{env_idx}/base_link"
+        map_base_trans.child_frame_id = f"unitree_go2_{env_idx}/base_link"
         map_base_trans.transform.translation.x = base_pos[0].item()
         map_base_trans.transform.translation.y = base_pos[1].item()
         map_base_trans.transform.translation.z = base_pos[2].item()
@@ -261,10 +253,7 @@ class RobotDataManager(Node):
 
     def publish_lidar_data(self, points, env_idx):
         point_cloud = PointCloud2()
-        if (self.num_envs == 1):
-            point_cloud.header.frame_id = "unitree_go2/lidar_frame"
-        else:
-            point_cloud.header.frame_id = f"unitree_go2_{env_idx}/lidar_frame"
+        point_cloud.header.frame_id = f"unitree_go2_{env_idx}/lidar_frame"
         point_cloud.header.stamp = self.get_clock().now().to_msg()
         fields = [
             PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
@@ -337,18 +326,12 @@ class RobotDataManager(Node):
 
     def pub_image_graph(self):
         for i in range(self.num_envs):
-            if (self.num_envs == 1):
-                color_topic_name = "unitree_go2/front_cam/color_image"
-                depth_topic_name = "unitree_go2/front_cam/depth_image"
-                # segmentation_topic_name = "unitree_go2/front_cam/segmentation_image"
-                # depth_cloud_topic_name = "unitree_go2/front_cam/depth_cloud"
-                frame_id = "unitree_go2/front_cam"                         
-            else:
-                color_topic_name = f"unitree_go2_{i}/front_cam/color_image"
-                depth_topic_name = f"unitree_go2_{i}/front_cam/depth_image"
-                # segmentation_topic_name = f"unitree_go2_{i}/front_cam/segmentation_image"
-                # depth_cloud_topic_name = f"unitree_go2_{i}/front_cam/depth_cloud"
-                frame_id = f"unitree_go2_{i}/front_cam"
+
+            color_topic_name = f"unitree_go2_{i}/front_cam/color_image"
+            depth_topic_name = f"unitree_go2_{i}/front_cam/depth_image"
+            # segmentation_topic_name = f"unitree_go2_{i}/front_cam/segmentation_image"
+            # depth_cloud_topic_name = f"unitree_go2_{i}/front_cam/depth_cloud"
+            frame_id = f"unitree_go2_{i}/front_cam"
             keys = og.Controller.Keys
             og.Controller.edit(
                 {
@@ -383,18 +366,6 @@ class RobotDataManager(Node):
                         ("ROS2CameraHelperDepth.inputs:frameId", frame_id),
                         ("ROS2CameraHelperDepth.inputs:useSystemTime", False),
 
-                        # semantic camera
-                        # ("ROS2CameraHelperSegmentation.inputs:type", "semantic_segmentation"),
-                        # ("ROS2CameraHelperSegmentation.inputs:enableSemanticLabels", True),
-                        # ("ROS2CameraHelperSegmentation.inputs:topicName", segmentation_topic_name),
-                        # ("ROS2CameraHelperSegmentation.inputs:frameId", frame_id),
-                        # ("ROS2CameraHelperSegmentation.inputs:useSystemTime", False),
-
-                        # depth camera cloud
-                        # ("ROS2CameraHelperDepthCloud.inputs:type", "depth_pcl"),
-                        # ("ROS2CameraHelperDepthCloud.inputs:topicName", depth_cloud_topic_name),
-                        # ("ROS2CameraHelperDepthCloud.inputs:frameId", frame_id),
-                        # ("ROS2CameraHelperDepthCloud.inputs:useSystemTime", True),
                     ],
 
                     keys.CONNECT: [
@@ -403,10 +374,7 @@ class RobotDataManager(Node):
                         ("IsaacCreateRenderProduct.outputs:renderProductPath", "ROS2CameraHelperColor.inputs:renderProductPath"),
                         ("IsaacCreateRenderProduct.outputs:execOut", "ROS2CameraHelperDepth.inputs:execIn"),
                         ("IsaacCreateRenderProduct.outputs:renderProductPath", "ROS2CameraHelperDepth.inputs:renderProductPath"),
-                        # ("IsaacCreateRenderProduct.outputs:execOut", "ROS2CameraHelperSegmentation.inputs:execIn"),
-                        # ("IsaacCreateRenderProduct.outputs:renderProductPath", "ROS2CameraHelperSegmentation.inputs:renderProductPath"),
-                        # ("IsaacCreateRenderProduct.outputs:execOut", "ROS2CameraHelperDepthCloud.inputs:execIn"),
-                        # ("IsaacCreateRenderProduct.outputs:renderProductPath", "ROS2CameraHelperDepthCloud.inputs:renderProductPath"),
+
                     ],
 
                 },
@@ -416,23 +384,16 @@ class RobotDataManager(Node):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            step_size = 1
-            if (self.num_envs == 1):
-                topic_name = "unitree_go2/front_cam/color_image"
-                frame_id = "unitree_go2/front_cam"                         
-            else:
-                topic_name = f"unitree_go2_{i}/front_cam/color_image"
-                frame_id = f"unitree_go2_{i}/front_cam"
-            node_namespace = ""         
-            queue_size = 1
+            topic_name = f"unitree_go2_{i}/front_cam/color_image"
+            frame_id = f"unitree_go2_{i}/front_cam"
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(sd.SensorType.Rgb.name)
             
             writer = rep.writers.get(rv + "ROS2PublishImage")
             writer.initialize(
                 frameId=frame_id,
-                nodeNamespace=node_namespace,
-                queueSize=queue_size,
+                nodeNamespace=self.node_namespace,
+                queueSize=self.queue_size,
                 topicName=topic_name,
             )
             writer.attach([render_product])
@@ -441,21 +402,15 @@ class RobotDataManager(Node):
             gate_path = omni.syntheticdata.SyntheticData._get_node_path(
                 rv + "IsaacSimulationGate", render_product
             )
-            og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+            og.Controller.attribute(gate_path + ".inputs:step").set(self.step_size)
 
     def pub_depth_image(self):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            step_size = 1
-            if (self.num_envs == 1):
-                topic_name = "unitree_go2/front_cam/depth_image"                
-                frame_id = "unitree_go2/front_cam"          
-            else:
-                topic_name = f"unitree_go2_{i}/front_cam/depth_image"
-                frame_id = f"unitree_go2_{i}/front_cam"
-            node_namespace = ""
-            queue_size = 1
+            topic_name = f"unitree_go2_{i}/front_cam/depth_image"
+            frame_id = f"unitree_go2_{i}/front_cam"
+
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
                                     sd.SensorType.DistanceToImagePlane.name
@@ -463,8 +418,8 @@ class RobotDataManager(Node):
             writer = rep.writers.get(rv + "ROS2PublishImage")
             writer.initialize(
                 frameId=frame_id,
-                nodeNamespace=node_namespace,
-                queueSize=queue_size,
+                nodeNamespace=self.node_namespace,
+                queueSize=self.queue_size,
                 topicName=topic_name
             )
             writer.attach([render_product])
@@ -473,23 +428,16 @@ class RobotDataManager(Node):
             gate_path = omni.syntheticdata.SyntheticData._get_node_path(
                 rv + "IsaacSimulationGate", render_product
             )
-            og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+            og.Controller.attribute(gate_path + ".inputs:step").set(self.step_size)
 
     def pub_semantic_image(self):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            step_size = 1
-            if (self.num_envs == 1):
-                topic_name = "unitree_go2/front_cam/semantic_segmentation_image"
-                label_topic_name = "unitree_go2/front_cam/semantic_segmentation_label"                       
-                frame_id = "unitree_go2/front_cam"          
-            else:
-                topic_name = f"unitree_go2_{i}/front_cam/semantic_segmentation_image"
-                label_topic_name = f"unitree_go2_{i}/front_cam/semantic_segmentation_label"                       
-                frame_id = f"unitree_go2_{i}/front_cam"
-            node_namespace = ""
-            queue_size = 1
+            topic_name = f"unitree_go2_{i}/front_cam/semantic_segmentation_image"
+            label_topic_name = f"unitree_go2_{i}/front_cam/semantic_segmentation_label"                       
+            frame_id = f"unitree_go2_{i}/front_cam"
+
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
                                     sd.SensorType.SemanticSegmentation.name
@@ -497,8 +445,8 @@ class RobotDataManager(Node):
             writer = rep.writers.get("ROS2PublishSemanticSegmentation")
             writer.initialize(
                 frameId=frame_id,
-                nodeNamespace=node_namespace,
-                queueSize=queue_size,
+                nodeNamespace=self.node_namespace,
+                queueSize=self.queue_size,
                 topicName=topic_name
             )
             writer.attach([render_product])
@@ -507,8 +455,8 @@ class RobotDataManager(Node):
                "SemanticSegmentationSD" + f"ROS2PublishSemanticLabels"
             )
             semantic_writer.initialize(
-                nodeNamespace=node_namespace,
-                queueSize=queue_size,
+                nodeNamespace=self.node_namespace,
+                queueSize=self.queue_size,
                 topicName=label_topic_name,
             )
             semantic_writer.attach([render_product])
@@ -517,24 +465,15 @@ class RobotDataManager(Node):
             gate_path = omni.syntheticdata.SyntheticData._get_node_path(
                 rv + "IsaacSimulationGate", render_product
             )
-            og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+            og.Controller.attribute(gate_path + ".inputs:step").set(self.step_size)
 
     def pub_cam_depth_cloud(self):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            step_size = 1
-            if (self.num_envs == 1):
-                topic_name = "unitree_go2/front_cam/depth_cloud"    
-                frame_id = "unitree_go2/front_cam"          
-            else:
-                topic_name = f"unitree_go2_{i}/front_cam/depth_cloud"
-                frame_id = f"unitree_go2_{i}/front_cam"
-            node_namespace = ""         
-            queue_size = 1
+            topic_name = f"unitree_go2_{i}/front_cam/depth_cloud"
+            frame_id = f"unitree_go2_{i}/front_cam"
 
-            # Note, this pointcloud publisher will simply convert the Depth image to a pointcloud using the Camera intrinsics.
-            # This pointcloud generation method does not support semantic labelled objects.
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
                 sd.SensorType.DistanceToImagePlane.name
             )
@@ -542,8 +481,8 @@ class RobotDataManager(Node):
             writer = rep.writers.get(rv + "ROS2PublishPointCloud")
             writer.initialize(
                 frameId=frame_id,
-                nodeNamespace=node_namespace,
-                queueSize=queue_size,
+                nodeNamespace=self.node_namespace,
+                queueSize=self.queue_size,
                 topicName=topic_name,
             )
             writer.attach([render_product])
@@ -553,27 +492,21 @@ class RobotDataManager(Node):
                 rv + "IsaacSimulationGate", render_product
             )
 
-            og.Controller.attribute(gate_path + ".inputs:step").set(step_size)   
+            og.Controller.attribute(gate_path + ".inputs:step").set(self.step_size)   
 
     def publish_camera_info(self):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            step_size = 1
-            if (self.num_envs == 1):
-                topic_name = "unitree_go2/front_cam/info"
-            else:
-                topic_name = f"unitree_go2_{i}/front_cam/info"
-            queue_size = 1
-            node_namespace = ""
+            topic_name = f"unitree_go2_{i}/front_cam/info"
             frame_id = self.cameras[i].prim_path.split("/")[-1] # This matches what the TF tree is publishing.
 
             writer = rep.writers.get("ROS2PublishCameraInfo")
             camera_info = read_camera_info(render_product_path=render_product)
             writer.initialize(
                 frameId=frame_id,
-                nodeNamespace=node_namespace,
-                queueSize=queue_size,
+                nodeNamespace=self.node_namespace,
+                queueSize=self.queue_size,
                 topicName=topic_name,
                 width=camera_info["width"],
                 height=camera_info["height"],
@@ -591,4 +524,105 @@ class RobotDataManager(Node):
             )
 
             # Set step input of the Isaac Simulation Gate nodes upstream of ROS publishers to control their execution rate
-            og.Controller.attribute(gate_path + ".inputs:step").set(step_size)            
+            og.Controller.attribute(gate_path + ".inputs:step").set(self.step_size)      
+
+    def image_callback(self, msg, env_idx):
+        """Process camera images and detect objects using YOLO."""
+        try:
+            # Convert ROS Image to OpenCV image
+            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            
+            # Run YOLO detection
+            results = self.model(cv_image)
+            
+            # Create Detection2DArray message
+            det_array_msg = Detection2DArray()
+            det_array_msg.header = msg.header
+            
+            # Create marker array for 3D visualization
+            marker_array = MarkerArray()
+            
+            # Process each detection
+            for idx, result in enumerate(results[0].boxes.data):
+                box = result[:4].cpu().numpy()  # Convert tensor to numpy array
+                score = float(result[4])
+                class_id = int(result[5])
+                
+                # Create 2D detection message
+                det = Detection2D()
+                det.header = msg.header
+                
+                # Set bounding box
+                det.bbox = BoundingBox2D()
+                center_pose = Pose2D()
+                center_pose.position.x = float((box[0] + box[2]) / 2)
+                center_pose.position.y = float((box[1] + box[3]) / 2)
+                center_pose.theta = 0.0
+                det.bbox.center = center_pose
+                det.bbox.size_x = float(box[2] - box[0])
+                det.bbox.size_y = float(box[3] - box[1])
+                
+                # Add class and score
+                hypothesis = ObjectHypothesisWithPose()
+                hypothesis.hypothesis.class_id = str(class_id)
+                hypothesis.hypothesis.score = score
+                det.results.append(hypothesis)
+                det_array_msg.detections.append(det)
+                
+                # Draw detection on image
+                cv2.rectangle(
+                    cv_image, 
+                    (int(box[0]), int(box[1])), 
+                    (int(box[2]), int(box[3])), 
+                    (0, 255, 0), 
+                    2
+                )
+                
+                # Add label with class name and score
+                label = f"{self.model.names[class_id]}: {score:.2f}"
+                cv2.putText(
+                    cv_image,
+                    label,
+                    (int(box[0]), int(box[1]) - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (0, 255, 0),
+                    2
+                )
+                
+                # Create 3D marker for visualization
+                marker = Marker()
+                marker.header.frame_id = f"unitree_go2_{env_idx}/front_cam"
+                marker.header.stamp = self.get_clock().now().to_msg()
+                marker.id = idx
+                marker.type = Marker.CUBE
+                marker.action = Marker.ADD
+                
+                # Position marker in 3D space (simplified projection)
+                marker.pose.position.x = 2.0  # 2 meters in front of camera
+                marker.pose.position.y = ((box[0] + box[2])/2 - 320) / 100.0  # scaled x offset from center
+                marker.pose.position.z = ((box[1] + box[3])/2 - 240) / 100.0  # scaled y offset from center
+                
+                # Set marker orientation
+                marker.pose.orientation.w = 1.0
+                
+                # Set marker size
+                marker.scale.x = 0.2
+                marker.scale.y = 0.2
+                marker.scale.z = 0.2
+                
+                # Set marker color
+                marker.color.r = 1.0
+                marker.color.g = 0.0
+                marker.color.b = 0.0
+                marker.color.a = 0.8
+                
+                marker_array.markers.append(marker)
+            
+            # Publish all results
+            self.det_pub[env_idx].publish(det_array_msg)
+            self.vis_pub[env_idx].publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
+            self.marker_pub[env_idx].publish(marker_array)
+            
+        except Exception as e:
+            self.get_logger().error(f'Error in image_callback: {str(e)}')
