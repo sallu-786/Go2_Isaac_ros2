@@ -41,7 +41,9 @@ Once the simulation is loaded, the robot can be teleoperated by the keyboard:
 
 ```W```: Forward, ```A```: Left, ```S```: Backward, ```D```: Right, ```Z```: Left Turn, ```C```: Right Turn.
 
-To set your own custom keys make changes in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>) ```go2/go2_ctrl.py``` 
+To set your own custom keys make changes in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>) 
+
+
 ![preview](<media/preview.png>)
 
 ## 3. ROS2 Topics and Visualization
@@ -83,13 +85,13 @@ Here is a categorized list of ROS 2 topics available for the Unitree Go2:
 
 
 ## 4. Simulation Environments & settings
-The simulation environments and settings can be changed in [sim.yaml](<cfg/sim.yaml>) ```isaac-go2-ros2/cfg/sim.yaml``` config file. 
+The simulation environments and settings can be changed in [sim.yaml](<cfg/sim.yaml>) config file. 
 
 #### Launch different simulation environments
-The current implementation contains a few environments which follows standard Isaac Sim method for importing USD environments(from cloud). To change the environment, please change the ```env_name``` in  [sim.yaml](<cfg/sim.yaml>) ```isaac-go2-ros2/cfg/sim.yaml```. Current available environments:
-- ```warehouse```: A simple warehouse environment in Isaac Sim. (for further options in warehouse category, change path value in ```create_warehouse_env()``` function inside  [sim_env.py](<env/sim_env.py>) ```env/sim_env.py```)
-- ```obstacle```: An obstacle field environment.  (change value of variable ```num_obstacles``` inside [sim_env.py](<env/sim_env.py>) ```env/sim_env.py``` to make it dense or sparse)
-- ```terrain```: A Terrain environment in Isaac Sim. (for further options in terrain category, change path value in ```create_terrain_env()``` function inside  [sim_env.py](<env/sim_env.py>) ```env/sim_env.py```)
+The current implementation contains a few environments which follows standard Isaac Sim method for importing USD environments(from cloud). To change the environment, please change the ```env_name``` in  [sim.yaml](<cfg/sim.yaml>). Current available environments:
+- ```warehouse```: A simple warehouse environment in Isaac Sim. (for further options in warehouse category, change path value in function inside  [sim_env.py](<env/sim_env.py>) )
+- ```obstacle```: An obstacle field environment.  (change value of variable ```num_obstacles``` inside [sim_env.py](<env/sim_env.py>) to make it dense or sparse)
+- ```terrain```: A Terrain environment in Isaac Sim. (for further options in terrain category, change path value in ```create_terrain_env()``` function inside  [sim_env.py](<env/sim_env.py>))
 - ```office```
 - ```hospital```
 - ```rivermark```
@@ -97,7 +99,7 @@ The current implementation contains a few environments which follows standard Is
 As of now there are 70 environments assets available in isaac-sim 4.5.0. see more at [Environment Assets](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html)
   
 #### Launch different Policy/Algorithms 
-To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>) ```go2/go2_ctrl_cfg.py``` and use any of the following values 
+To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>) and use any of the following values 
   - ```ActorCriticRecurrent```
   - ```StudentTeacher```
   - ```StudentTeacherRecurrent```
@@ -106,10 +108,10 @@ Algorithm by default is ```PPO``` you may also use ```Distillation```. For compa
 
 **Load custom checkpoints**
 
-Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitree_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>)```go2/go2_ctrl_cfg.py```.
+Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitree_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>).
 
 #### Launch multiple robots in the environment
-This repository supports running multiple Unitree Go2 robots and the number of robots can by changed by the ```num_envs``` parameter in the config file [sim.yaml](<cfg/sim.yaml>)```isaac-go2-ros2/cfg/sim.yaml```.
+This repository supports running multiple Unitree Go2 robots and the number of robots can by changed by the ```num_envs``` parameter in the config file [sim.yaml](<cfg/sim.yaml>).
 
 ## 5. MCP Usage
 Robot can also be controlled by giving natural language commands from claude desktop. Read details in [README_MCP](<ros-mcp-server/README_MCP.md>)
