@@ -8,9 +8,9 @@ from msgs.sensor_msgs import Image, JointState
 
 
 # -------------------- ROS Config --------------------
-NUM_ENVS = 2  
-LOCAL_IP = "10.56.234.213"      #set your local IP address here
-ROSBRIDGE_IP = "10.56.234.213"  #IP of device running rosbridge
+NUM_ENVS = 1  
+LOCAL_IP = ""      #set your local IP address here
+ROSBRIDGE_IP = ""  #IP of device running rosbridge
 # If you are running this on the same machine use local IP
 ROSBRIDGE_PORT = 9090
 
