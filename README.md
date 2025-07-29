@@ -9,7 +9,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
 
 <table>
   <tr>
-    <td><img src="media/sim-demo.gif" style="width: 100%;"></td>
+    <td><img src="media/sim-demo2.gif" style="width: 100%;"></td>
   </tr>
 </table>
 
