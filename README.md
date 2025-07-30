@@ -135,4 +135,5 @@ work is supported by [Toyota-Boshoku](https://www.toyota-boshoku.com/)
   year = "2025",
   url = "https://github.com/sallu-786/Go2_Isaac_ros2",
   note = "Version 1.0.0"
-}```
+}
+```
