@@ -125,3 +125,14 @@ Repository is built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-
 Go2 controller is based on the RL controller implemented in [go2_omniverse](https://github.com/abizovnuralem/go2_omniverse).
 
 MCP Control is based on [ros-mcp-server](https://github.com/lpigeon/ros-mcp-server)
+
+work is supported by [Toyota-Boshoku](https://www.toyota-boshoku.com/)
+
+##7. Citation
+@MISC{Suleman2025,
+  author = "Muhammad Suleman",
+  title = "Unitree Go2 in Isaac-Sim",
+  year = "2025",
+  url = "https://github.com/sallu-786/Go2_Isaac_ros2",
+  note = "Version 1.0.0"
+}
