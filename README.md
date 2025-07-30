@@ -27,7 +27,6 @@ git clone https://github.com/sallu-786/Go2_Isaac_ros2/
 
 **Step V:** Install Dependencies for computer vision tasks
 ```
-cd ~/Go2_Isaac_ros2
 conda activate env_isaaclab  
 pip install -r requirements.txt
 ```
