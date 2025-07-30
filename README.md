@@ -13,7 +13,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
 
 **Step II:** Please install [ROS2 Humble](https://docs.ros.org/en/humble/index.html) with the official installation guide.
 
-**Step III:** Install the prerequisite C extension in the conda environment.
+**Step III:** Install the prerequisite C extension in the conda environment. (Also refer to requirements.txt for other dependencies)
 ```
 # Assuming you are using default conda env name from IsaacLab (env_isaaclab)
 conda activate env_isaaclab     
