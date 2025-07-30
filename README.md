@@ -7,12 +7,6 @@
 
 Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2.1.0). This repository has been updated to make use of latest Nvidia libraries using [Migration Guide](https://isaac-sim.github.io/IsaacLab/main/source/migration/migrating_from_orbit.html) and tested on multiple devices. 
 
-<table>
-  <tr>
-    <td><img src="media/sim-demo2.gif" style="width: 100%;"></td>
-  </tr>
-</table>
-
 
 ## 1. Installation Guide
 **Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html) to install the latest Isaac Sim and Isaac Lab.
