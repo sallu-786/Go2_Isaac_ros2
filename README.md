@@ -129,7 +129,8 @@ MCP Control is based on [ros-mcp-server](https://github.com/lpigeon/ros-mcp-serv
 work is supported by [Toyota-Boshoku](https://www.toyota-boshoku.com/)
 
 ## 7. Citation
-```@MISC{Suleman2025,
+```
+@MISC{Suleman2025,
   author = "Muhammad Suleman",
   title = "Unitree Go2 in Isaac-Sim",
   year = "2025",
