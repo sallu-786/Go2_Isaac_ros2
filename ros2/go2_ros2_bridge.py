@@ -533,7 +533,7 @@ class RobotDataManager(Node):
             cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
             
             # Run YOLO detection
-            results = self.model(cv_image)
+            results = self.model(cv_image, verbose=False)
             
             # Create Detection2DArray message
             det_array_msg = Detection2DArray()
