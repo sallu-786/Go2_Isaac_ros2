@@ -37,23 +37,8 @@ source .venv/bin/activate
 ### MCP Server Configuration
 
 
+#### Option A: 
 Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)) and set MCP setting to mcp.json.
-
-```bash
-{
-  "mcpServers": {
-    "ros-mcp-server": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/ABSOLUTE/PATH/TO/Go2_Isaac_ros2/ros-mcp-server",,
-        "run",
-        "server.py"
-      ]
-    }
-  }
-}
-```
 
 You can find mcp.json using the following command:
 
@@ -72,6 +57,27 @@ code ~/.config/Claude/claude_desktop_config.json
 ```bash
 code $env:AppData\Claude\claude_desktop_config.json
 ```
+
+#### Option A. Install Cursor
+
+Paste the following code in mcp.json file
+
+```bash
+{
+  "mcpServers": {
+    "ros-mcp-server": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/ABSOLUTE/PATH/TO/Go2_Isaac_ros2/ros-mcp-server",,
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}
+```
+
 
 ## MCP Functions
 
@@ -93,7 +99,7 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 
 ![rosbridge server launch](<img/rosbridge.png>)
 
-### 3. Run ```main.py``` 
+### 3. Run ```main.py``` as per [README.MD](<README.md>) 
 Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has same value as ```NUM_ENVS``` in [server.py](<server.py>)
 
 
