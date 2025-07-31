@@ -60,8 +60,14 @@ code $env:AppData\Claude\claude_desktop_config.json
 
 #### Option A. Install Cursor
 
-Paste the following code in mcp.json file
+In cursor open settings and go to ```Tools & Integrations``` and then click ```Add Custom MCP```. 
 
+
+![cursor](<img/mcp_cursor.jpg>)
+
+
+### MCP Config File
+Paste the code in mcp.json file
 ```bash
 {
   "mcpServers": {
