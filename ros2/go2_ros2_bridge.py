@@ -44,6 +44,7 @@ class RobotDataManager(Node):
         self.step_size = 1
         self.node_namespace = ""         
         self.queue_size = 1
+        self.confidence_threshold = 0.7  # Set your desired confidence threshold for YOLO detection
         
         # ROS2 Broadcaster
         self.broadcaster= TransformBroadcaster(self)
@@ -547,77 +548,77 @@ class RobotDataManager(Node):
                 box = result[:4].cpu().numpy()  # Convert tensor to numpy array
                 score = float(result[4])
                 class_id = int(result[5])
-                
-                # Create 2D detection message
-                det = Detection2D()
-                det.header = msg.header
-                
-                # Set bounding box
-                det.bbox = BoundingBox2D()
-                center_pose = Pose2D()
-                center_pose.position.x = float((box[0] + box[2]) / 2)
-                center_pose.position.y = float((box[1] + box[3]) / 2)
-                center_pose.theta = 0.0
-                det.bbox.center = center_pose
-                det.bbox.size_x = float(box[2] - box[0])
-                det.bbox.size_y = float(box[3] - box[1])
-                
-                # Add class and score
-                hypothesis = ObjectHypothesisWithPose()
-                hypothesis.hypothesis.class_id = str(class_id)
-                hypothesis.hypothesis.score = score
-                det.results.append(hypothesis)
-                det_array_msg.detections.append(det)
-                
-                # Draw detection on image
-                cv2.rectangle(
-                    cv_image, 
-                    (int(box[0]), int(box[1])), 
-                    (int(box[2]), int(box[3])), 
-                    (0, 255, 0), 
-                    2
-                )
-                
-                # Add label with class name and score
-                label = f"{self.model.names[class_id]}: {score:.2f}"
-                cv2.putText(
-                    cv_image,
-                    label,
-                    (int(box[0]), int(box[1]) - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.5,
-                    (0, 255, 0),
-                    2
-                )
-                
-                # Create 3D marker for visualization
-                marker = Marker()
-                marker.header.frame_id = f"unitree_go2_{env_idx}/front_cam"
-                marker.header.stamp = self.get_clock().now().to_msg()
-                marker.id = idx
-                marker.type = Marker.CUBE
-                marker.action = Marker.ADD
-                
-                # Position marker in 3D space (simplified projection)
-                marker.pose.position.x = 2.0  # 2 meters in front of camera
-                marker.pose.position.y = ((box[0] + box[2])/2 - 320) / 100.0  # scaled x offset from center
-                marker.pose.position.z = ((box[1] + box[3])/2 - 240) / 100.0  # scaled y offset from center
-                
-                # Set marker orientation
-                marker.pose.orientation.w = 1.0
-                
-                # Set marker size
-                marker.scale.x = 0.2
-                marker.scale.y = 0.2
-                marker.scale.z = 0.2
-                
-                # Set marker color
-                marker.color.r = 1.0
-                marker.color.g = 0.0
-                marker.color.b = 0.0
-                marker.color.a = 0.8
-                
-                marker_array.markers.append(marker)
+                if score >= self.confidence_threshold: 
+                    # Create 2D detection message
+                    det = Detection2D()
+                    det.header = msg.header
+                    
+                    # Set bounding box
+                    det.bbox = BoundingBox2D()
+                    center_pose = Pose2D()
+                    center_pose.position.x = float((box[0] + box[2]) / 2)
+                    center_pose.position.y = float((box[1] + box[3]) / 2)
+                    center_pose.theta = 0.0
+                    det.bbox.center = center_pose
+                    det.bbox.size_x = float(box[2] - box[0])
+                    det.bbox.size_y = float(box[3] - box[1])
+                    
+                    # Add class and score
+                    hypothesis = ObjectHypothesisWithPose()
+                    hypothesis.hypothesis.class_id = str(class_id)
+                    hypothesis.hypothesis.score = score
+                    det.results.append(hypothesis)
+                    det_array_msg.detections.append(det)
+                    
+                    # Draw detection on image
+                    cv2.rectangle(
+                        cv_image, 
+                        (int(box[0]), int(box[1])), 
+                        (int(box[2]), int(box[3])), 
+                        (0, 255, 0), 
+                        2
+                    )
+                    
+                    # Add label with class name and score
+                    label = f"{self.model.names[class_id]}: {score:.2f}"
+                    cv2.putText(
+                        cv_image,
+                        label,
+                        (int(box[0]), int(box[1]) - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5,
+                        (0, 255, 0),
+                        2
+                    )
+                    
+                    # Create 3D marker for visualization
+                    marker = Marker()
+                    marker.header.frame_id = f"unitree_go2_{env_idx}/front_cam"
+                    marker.header.stamp = self.get_clock().now().to_msg()
+                    marker.id = idx
+                    marker.type = Marker.CUBE
+                    marker.action = Marker.ADD
+                    
+                    # Position marker in 3D space (simplified projection)
+                    marker.pose.position.x = 2.0  # 2 meters in front of camera
+                    marker.pose.position.y = ((box[0] + box[2])/2 - 320) / 100.0  # scaled x offset from center
+                    marker.pose.position.z = ((box[1] + box[3])/2 - 240) / 100.0  # scaled y offset from center
+                    
+                    # Set marker orientation
+                    marker.pose.orientation.w = 1.0
+                    
+                    # Set marker size
+                    marker.scale.x = 0.2
+                    marker.scale.y = 0.2
+                    marker.scale.z = 0.2
+                    
+                    # Set marker color
+                    marker.color.r = 1.0
+                    marker.color.g = 0.0
+                    marker.color.b = 0.0
+                    marker.color.a = 0.8
+                    
+                    marker_array.markers.append(marker)
             
             # Publish all results
             self.det_pub[env_idx].publish(det_array_msg)
