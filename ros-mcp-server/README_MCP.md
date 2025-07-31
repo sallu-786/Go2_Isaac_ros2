@@ -52,6 +52,9 @@ In cursor open settings and go to ```Tools & Integrations``` and then click ```A
 Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)). 
 Run claude desktop and go to developer settings and click Add MCP Server. Then paste the code given in section 4.1
 
+
+![claude](<img/mcp_server.png>)
+
 Once created, you can find mcp.json using the following command:
 
 - MacOS
@@ -111,14 +114,6 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 
 ### 3. Run ```main.py``` as per [README.MD](<README.md>) 
 Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has same value as ```NUM_ENVS``` in [server.py](<server.py>)
-
-
-### 4. Launch Claude Desktop
-
-Confirm mcp server is running correctly
-
-
-
 
 
 ### 5. Type your instructions in chat
