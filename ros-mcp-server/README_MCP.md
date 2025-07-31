@@ -110,7 +110,7 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 
 ![rosbridge server launch](<img/rosbridge.png>)
 
-### 4. Run ```main.py``` as per [README.MD](<README.md>) 
+### 4. Run ```main.py``` as per [README.MD](<(https://github.com/sallu-786/Go2_Isaac_ros2/blob/main/README.md)>) 
 Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has same value as ```NUM_ENVS``` in [server.py](<server.py>)
 
 
