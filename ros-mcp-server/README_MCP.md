@@ -53,23 +53,6 @@ Run claude desktop and go to developer settings and click Add MCP Server. Then p
 
 ![claude](<img/mcp_server.png>)
 
-Once created, you can find mcp.json using the following command:
-
-- MacOS
-```bash
-code ~/Library/Application\ Support/Claude/claude_desktop_config.json
-```
-
-- Linux(Ubuntu)
-  
-```bash
-code ~/.config/Claude/claude_desktop_config.json
-```
-
-- Windows
-```bash
-code $env:AppData\Claude\claude_desktop_config.json
-```
 
 ### 2.1 MCP Config File
 Paste the code in mcp.json file
