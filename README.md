@@ -109,13 +109,16 @@ To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py]
 
 Algorithm by default is ```PPO``` you may also use ```Distillation```. For compatibility check and more details, please visit [API_docs](https://isaac-sim.github.io/IsaacLab/main/source/api/lab_rl/isaaclab_rl.html)
 
-### 4.3Load custom checkpoints
+#### 4.3 Load custom checkpoints
 
 Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitree_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>).
 
 #### 4.4 Launch multiple robots in the environment
 This repository supports running multiple Unitree Go2 robots and the number of robots can by changed by the ```num_envs``` parameter in the config file [sim.yaml](<cfg/sim.yaml>).
 
+#### 4.5 Change Yolo settings
+Yolo models should be placed inside [yolo](<yolo>) folder Confidence threshold for classifying object is set to **0.7**. To customize model and confidence value, change the ```self.model``` and ```self.confidence_threshold``` 
+inside [go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>).
 ## 5. MCP Usage
 Robot can also be controlled by giving natural language commands from claude desktop. Read details in [README_MCP](<ros-mcp-server/README_MCP.md>)
 
