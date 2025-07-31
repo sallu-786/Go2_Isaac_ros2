@@ -39,7 +39,7 @@ source .venv/bin/activate
 
 #### Option A. Install Cursor (Recommended)
 
-In cursor open settings and go to ```Tools & Integrations``` and then click ```Add Custom MCP```. 
+In cursor open settings and go to ```Tools & Integrations``` and then click ```Add Custom MCP```. Then paste the code in section 2.1
 
 
 ![cursor](<img/mcp_cursor.jpg>)
@@ -48,7 +48,7 @@ In cursor open settings and go to ```Tools & Integrations``` and then click ```A
 
 #### Option B: 
 Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)). 
-Run claude desktop and go to developer settings and click Add MCP Server. Then paste the code given in section 2.1
+Run claude desktop and go to ```developer``` settings and click ```Add MCP Server```. Then paste the code given in section 2.1
 
 
 ![claude](<img/mcp_server.png>)
