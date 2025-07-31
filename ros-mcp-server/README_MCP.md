@@ -16,7 +16,7 @@ The ROS MCP Server is designed to support robots in performing complex tasks and
 
 
 
-## Installation
+## 1. Installation
 
 ### `uv` Installation
 - To install `uv`, you can use the following command:
@@ -34,9 +34,7 @@ uv venv
 source .venv/bin/activate
 ```
 
-### MCP Server Configuration
-
-
+### 2. MCP Server Configuration
 
 
 #### Option A. Install Cursor (Recommended)
@@ -50,7 +48,7 @@ In cursor open settings and go to ```Tools & Integrations``` and then click ```A
 
 #### Option B: 
 Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)). 
-Run claude desktop and go to developer settings and click Add MCP Server. Then paste the code given in section 4.1
+Run claude desktop and go to developer settings and click Add MCP Server. Then paste the code given in section 2.1
 
 
 ![claude](<img/mcp_server.png>)
@@ -73,7 +71,7 @@ code ~/.config/Claude/claude_desktop_config.json
 code $env:AppData\Claude\claude_desktop_config.json
 ```
 
-### 4.1 MCP Config File
+### 2.1 MCP Config File
 Paste the code in mcp.json file
 ```bash
 {
@@ -92,11 +90,11 @@ Paste the code in mcp.json file
 ```
 
 
-## MCP Functions
+## 2.2 MCP Functions
 
 You can find the list of functions in the [MCPFUNCTIONS.md](MCPFUNCTIONS.md).
 
-## How To Use
+## 3. Launch Server
 ### 1. Set IP and Port to connect rosbridge.
 - Open `server.py` and change your `LOCAL_IP`, `ROSBRIDGE_IP` and `ROSBRIDGE_PORT`. (`ROSBRIDGE_PORT`'s default value is `9090`)
 
@@ -112,7 +110,7 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 
 ![rosbridge server launch](<img/rosbridge.png>)
 
-### 3. Run ```main.py``` as per [README.MD](<README.md>) 
+### 4. Run ```main.py``` as per [README.MD](<README.md>) 
 Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has same value as ```NUM_ENVS``` in [server.py](<server.py>)
 
 
