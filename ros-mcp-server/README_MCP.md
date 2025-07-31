@@ -37,10 +37,22 @@ source .venv/bin/activate
 ### MCP Server Configuration
 
 
-#### Option A: 
-Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)) and set MCP setting to mcp.json.
 
-You can find mcp.json using the following command:
+
+#### Option A. Install Cursor (Recommended)
+
+In cursor open settings and go to ```Tools & Integrations``` and then click ```Add Custom MCP```. 
+
+
+![cursor](<img/mcp_cursor.jpg>)
+
+
+
+#### Option B: 
+Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)). 
+Run claude desktop and go to developer settings and click Add MCP Server
+
+Once created, you can find mcp.json using the following command:
 
 - MacOS
 ```bash
@@ -57,14 +69,6 @@ code ~/.config/Claude/claude_desktop_config.json
 ```bash
 code $env:AppData\Claude\claude_desktop_config.json
 ```
-
-#### Option A. Install Cursor
-
-In cursor open settings and go to ```Tools & Integrations``` and then click ```Add Custom MCP```. 
-
-
-![cursor](<img/mcp_cursor.jpg>)
-
 
 ### MCP Config File
 Paste the code in mcp.json file
