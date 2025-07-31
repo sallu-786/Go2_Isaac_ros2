@@ -50,7 +50,7 @@ In cursor open settings and go to ```Tools & Integrations``` and then click ```A
 
 #### Option B: 
 Install Claude Desktop (For Linux installation follow [claude-desktop-debian](https://github.com/aaddrick/claude-desktop-debian)). 
-Run claude desktop and go to developer settings and click Add MCP Server
+Run claude desktop and go to developer settings and click Add MCP Server. Then paste the code given in section 4.1
 
 Once created, you can find mcp.json using the following command:
 
@@ -70,7 +70,7 @@ code ~/.config/Claude/claude_desktop_config.json
 code $env:AppData\Claude\claude_desktop_config.json
 ```
 
-### MCP Config File
+### 4.1 MCP Config File
 Paste the code in mcp.json file
 ```bash
 {
@@ -118,7 +118,7 @@ Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has sa
 Confirm mcp server is running correctly
 
 
-![Claude desktop mcp server](<img/mcp_server.png>)
+
 
 
 ### 5. Type your instructions in chat
