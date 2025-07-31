@@ -90,7 +90,7 @@ Here is a categorized list of ROS 2 topics available for the Unitree Go2:
 ## 4. Simulation Environments & settings
 The simulation environments and settings can be changed in [sim.yaml](<cfg/sim.yaml>) config file. 
 
-#### 4.1 Launch different simulation environments
+### 4.1 Launch different simulation environments
 The current implementation contains a few environments which follows standard Isaac Sim method for importing USD environments(from cloud). To change the environment, please change the ```env_name``` in  [sim.yaml](<cfg/sim.yaml>). Current available environments:
 - ```warehouse```: A simple warehouse environment in Isaac Sim. (for further options in warehouse category, change path value in function inside  [sim_env.py](<env/sim_env.py>) )
 - ```obstacle```: An obstacle field environment.  (change value of variable ```num_obstacles``` inside [sim_env.py](<env/sim_env.py>) to make it dense or sparse)
@@ -101,7 +101,7 @@ The current implementation contains a few environments which follows standard Is
 
 As of now there are 70 environments assets available in isaac-sim 4.5.0. see more at [Environment Assets](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html)
   
-#### 4.2 Launch different Policy/Algorithms 
+### 4.2 Launch different Policy/Algorithms 
 To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>) and use any of the following values 
   - ```ActorCriticRecurrent```
   - ```StudentTeacher```
@@ -109,14 +109,14 @@ To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py]
 
 Algorithm by default is ```PPO``` you may also use ```Distillation```. For compatibility check and more details, please visit [API_docs](https://isaac-sim.github.io/IsaacLab/main/source/api/lab_rl/isaaclab_rl.html)
 
-#### 4.3 Load custom checkpoints
+### 4.3 Load custom checkpoints
 
 Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitree_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>).
 
-#### 4.4 Launch multiple robots in the environment
+### 4.4 Launch multiple robots in the environment
 This repository supports running multiple Unitree Go2 robots and the number of robots can by changed by the ```num_envs``` parameter in the config file [sim.yaml](<cfg/sim.yaml>).
 
-#### 4.5 Change Yolo settings
+### 4.5 Change Yolo settings
 Yolo models should be placed inside [yolo](<yolo>) folder Confidence threshold for classifying object is set to **0.7**. To customize model and confidence value, change the ```self.model``` and ```self.confidence_threshold``` 
 inside [go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>).
 ## 5. MCP Usage
