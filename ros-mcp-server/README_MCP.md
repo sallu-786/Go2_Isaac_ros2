@@ -37,8 +37,7 @@ source .venv/bin/activate
 ### 2. MCP Server Configuration
 
 
-#### Option A. Install Cursor (Recommended)
-
+#### Option A. Install Cursor 
 In cursor open settings and go to ```Tools & Integrations``` and then click ```Add Custom MCP```. Then paste the code in section 2.1
 
 
