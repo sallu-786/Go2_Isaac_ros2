@@ -145,3 +145,6 @@ work is supported by [Toyota-Boshoku](https://www.toyota-boshoku.com/)
   note = "Version 1.0.0"
 }
 ```
+## 8. Contact
+sulemanmuhammad08@gmail.com
+
