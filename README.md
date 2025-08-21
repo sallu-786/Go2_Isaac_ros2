@@ -7,6 +7,9 @@
 
 Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2.1.0). This repository has been updated to make use of latest Nvidia libraries using [Migration Guide](https://isaac-sim.github.io/IsaacLab/main/source/migration/migrating_from_orbit.html) and tested on multiple devices. 
 
+## Update: 
+Isaa-Sim 5.0.0 and IsaacLab 2.2.0 supports python 3.11. While ubuntu 22.04 with ros-humble is python 3.10 based and ubuntu 24.04 with ros2-jazzy is python 3.12 based. This causes rclpy error [read more](https://github.com/isaac-sim/IsaacLab/issues/3129)
+
 
 ![intro](<media/intro.gif>)
 
