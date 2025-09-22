@@ -14,6 +14,29 @@ Isaac-Sim 5.0.0 and IsaacLab 2.2.0 support ```Python 3.11```. However, Ubuntu 22
 ![intro](<media/intro.gif>)
 
 
+---
+
+## Table of Contents
+1. [Installation Guide](#1-installation-guide)  
+2. [Run Unitree Go2 Simulation](#2-run-unitree-go2-simulation)  
+3. [ROS2 Topics and Visualization](#3-ros2-topics-and-visualization)  
+   - [Command and Control](#31-command-and-control)  
+   - [Front Camera](#32-front-camera)  
+   - [LIDAR](#33-lidar)  
+   - [Odometry and Localization](#34-odometry-and-localization)  
+4. [Simulation Environments & Settings](#4-simulation-environments--settings)  
+   - [Launch different simulation environments](#41-launch-different-simulation-environments)  
+   - [Launch different Policy/Algorithms](#42-launch-different-policyalgorithms)  
+   - [Load custom checkpoints](#43-load-custom-checkpoints)  
+   - [Launch multiple robots in the environment](#44-launch-multiple-robots-in-the-environment)  
+   - [Change Yolo settings](#45-change-yolo-settings)  
+5. [MCP Usage](#5-mcp-usage)  
+6. [Acknowledgement](#6-acknowledgement)  
+7. [Citation](#7-citation)  
+8. [Contact](#8-contact)  
+
+---
+
 ## 1. Installation Guide
 **Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html) to install the latest Isaac Sim and Isaac Lab.
 
