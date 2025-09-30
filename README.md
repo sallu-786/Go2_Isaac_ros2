@@ -11,8 +11,8 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
 - Isaac-Sim 5.0.0 and IsaacLab 2.2.0 support ```Python 3.11```. However, Ubuntu 22.04 with ROS Humble uses ```Python 3.10```, and Ubuntu 24.04 with ROS2 Jazzy is ```Python 3.12``` based. This leads to rclpy errors. [read bug report](https://github.com/isaac-sim/IsaacLab/issues/3129)
 
 - Spot has also been added to the repository. You can now use both Spot and Go2 with full features
-- ros-mcp-server has been updated for easier integration with any type of robot.
- ** Note:** My implementation is slightly different from source repository. For details Check [acknowledgment](#6-acknowledgement)
+- ros-mcp-server has been updated for easier integration with any type of robot.  (
+ ** Note:** my implementation is slightly different from source repository. For details check [acknowledgment](#6-acknowledgement)
   
  <img src="media/spot.png" width="1000"/>  <img src="media/intro.gif" width="1000"/> 
 
