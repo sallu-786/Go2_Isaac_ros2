@@ -43,7 +43,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
 ---
 
 ## 1. Installation Guide
-**Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html) to install the latest Isaac Sim and Isaac Lab.
+**Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab//v2.1.1/source/setup/installation/index.html) to install the latest Isaac Sim and Isaac Lab.
 
 **Step II:** Please install [ROS2 Humble](https://docs.ros.org/en/humble/index.html) with the official installation guide.
 
