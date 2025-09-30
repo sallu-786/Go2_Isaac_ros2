@@ -1,5 +1,5 @@
 from isaaclab.scene import InteractiveSceneCfg
-from isaaclab_assets.robots.unitree import UNITREE_GO2_CFG
+from isaaclab_assets.robots.spot import SPOT_CFG
 
 from isaaclab.sensors import RayCasterCfg, patterns, ContactSensorCfg
 from isaaclab.utils import configclass
@@ -14,11 +14,11 @@ from isaaclab.utils.noise import UniformNoiseCfg
 from isaacsim.core.utils.viewports import set_camera_view
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-import go2.go2_ctrl as go2_ctrl
+import quadruped.spot.spot_ctrl as spot_ctrl
 
 
 @configclass
-class Go2SimCfg(InteractiveSceneCfg):
+class SpotSimCfg(InteractiveSceneCfg):
     # ground plane
     ground = AssetBaseCfg(
         prim_path="/World/ground",
@@ -28,7 +28,6 @@ class Go2SimCfg(InteractiveSceneCfg):
         )
     )
     
-    # lights
     # Lights
     light = AssetBaseCfg(
         prim_path="/World/Light",
@@ -43,25 +42,26 @@ class Go2SimCfg(InteractiveSceneCfg):
     #     spawn=sim_utils.DomeLightCfg(color=(0.9, 0.9, 0.9), intensity=500.0),
     # )
 
-    # Go2 Robot
-    unitree_go2: ArticulationCfg = UNITREE_GO2_CFG.replace(prim_path="{ENV_REGEX_NS}/Go2")
-    # Go2 foot contact sensor
-    contact_forces = ContactSensorCfg(prim_path="{ENV_REGEX_NS}/Go2/.*_foot", history_length=3, track_air_time=True)
+    # Spot Robot
+    spot: ArticulationCfg = SPOT_CFG.replace(prim_path="{ENV_REGEX_NS}/spot")
+    
+    # Spot foot contact sensor
+    contact_forces = ContactSensorCfg(prim_path="{ENV_REGEX_NS}/spot/.*_foot", history_length=3, track_air_time=True)
 
-    # Go2 height scanner
-    height_scanner = RayCasterCfg(
-        prim_path="{ENV_REGEX_NS}/Go2/base",
-        offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20)), 
-        attach_yaw_only=True,
-        pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.0]), 
-        debug_vis=False,
-        mesh_prim_paths=["/World/ground"],
-    )
+    # Spot height scanner
+    # height_scanner = RayCasterCfg(
+    #     prim_path="{ENV_REGEX_NS}/spot/base",
+    #     offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20)), 
+    #     attach_yaw_only=True,
+    #     pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.0]), 
+    #     debug_vis=False,
+    #     mesh_prim_paths=["/World/ground"],
+    # )
 
 @configclass
 class ActionsCfg:
     """Action specifications for the environment."""
-    joint_pos = mdp.JointPositionActionCfg(asset_name="unitree_go2", joint_names=[".*"])
+    joint_pos = mdp.JointPositionActionCfg(asset_name="spot", joint_names=[".*"])
 
 @configclass
 class ObservationsCfg:
@@ -73,19 +73,19 @@ class ObservationsCfg:
 
         # observation terms (order preserved)
         base_lin_vel = ObsTerm(func=mdp.base_lin_vel,
-                               params={"asset_cfg": SceneEntityCfg(name="unitree_go2")})
+                               params={"asset_cfg": SceneEntityCfg(name="spot")})
         base_ang_vel = ObsTerm(func=mdp.base_ang_vel,
-                               params={"asset_cfg": SceneEntityCfg(name="unitree_go2")})
+                               params={"asset_cfg": SceneEntityCfg(name="spot")})
         projected_gravity = ObsTerm(func=mdp.projected_gravity,
-                                    params={"asset_cfg": SceneEntityCfg(name="unitree_go2")},
+                                    params={"asset_cfg": SceneEntityCfg(name="spot")},
                                     noise=UniformNoiseCfg(n_min=-0.05, n_max=0.05))
         # velocity command
-        base_vel_cmd = ObsTerm(func=go2_ctrl.base_vel_cmd)
+        base_vel_cmd = ObsTerm(func=spot_ctrl.base_vel_cmd)
 
         joint_pos = ObsTerm(func=mdp.joint_pos_rel,
-                            params={"asset_cfg": SceneEntityCfg(name="unitree_go2")})
+                            params={"asset_cfg": SceneEntityCfg(name="spot")})
         joint_vel = ObsTerm(func=mdp.joint_vel_rel,
-                            params={"asset_cfg": SceneEntityCfg(name="unitree_go2")})
+                            params={"asset_cfg": SceneEntityCfg(name="spot")})
         actions = ObsTerm(func=mdp.last_action)
         
         # Height scan
@@ -104,7 +104,7 @@ class ObservationsCfg:
 class CommandsCfg:
     """Command specifications for the MDP."""
     base_vel_cmd = mdp.UniformVelocityCommandCfg(
-        asset_name="unitree_go2",
+        asset_name="spot",
         resampling_time_range=(0.0, 0.0),
         debug_vis=True,
         ranges=mdp.UniformVelocityCommandCfg.Ranges(
@@ -136,10 +136,10 @@ class CurriculumCfg:
 
 
 @configclass
-class Go2RSLEnvCfg(ManagerBasedRLEnvCfg):
-    """Configuration for the Go2 environment."""
+class SpotRSLEnvCfg(ManagerBasedRLEnvCfg):
+    """Configuration for the Spot environment."""
     # scene settings
-    scene = Go2SimCfg(num_envs=2, env_spacing=2.0)
+    scene = SpotSimCfg(num_envs=1, env_spacing=2.0)
 
     # basic settings
     observations = ObservationsCfg()
@@ -172,13 +172,13 @@ class Go2RSLEnvCfg(ManagerBasedRLEnvCfg):
         self.is_finite_horizon = False
         self.actions.joint_pos.scale = 0.25
 
-        if self.scene.height_scanner is not None:
-            self.scene.height_scanner.update_period = self.decimation * self.sim.dt
+        # if self.scene.height_scanner is not None:
+        #     self.scene.height_scanner.update_period = self.decimation * self.sim.dt
 
 def camera_follow(env):
     # Remove conditional check and always use indexed naming
-    robot_position = env.unwrapped.scene[f"unitree_go2"].data.root_state_w[0, :3].cpu().numpy()
-    robot_orientation = env.unwrapped.scene[f"unitree_go2"].data.root_state_w[0, 3:7].cpu().numpy()
+    robot_position = env.unwrapped.scene[f"spot"].data.root_state_w[0, :3].cpu().numpy()
+    robot_orientation = env.unwrapped.scene[f"spot"].data.root_state_w[0, 3:7].cpu().numpy()
     rotation = R.from_quat([robot_orientation[1], robot_orientation[2], 
                             robot_orientation[3], robot_orientation[0]])
     yaw = rotation.as_euler('zyx')[0]

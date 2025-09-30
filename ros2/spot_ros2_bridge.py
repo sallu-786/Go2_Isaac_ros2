@@ -15,12 +15,13 @@ import omni.replicator.core as rep
 import omni.syntheticdata._syntheticdata as sd
 import subprocess
 import time
-import quadruped.go2.go2_ctrl as go2_ctrl
+import quadruped.spot.spot_ctrl as spot_ctrl
 #For YOLO detection
 from ultralytics import YOLO
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose, \
     BoundingBox2D, Pose2D
 from visualization_msgs.msg import MarkerArray, Marker
+
 
 ext_manager = omni.kit.app.get_app().get_extension_manager()
 ext_manager.set_extension_enabled_immediate("isaacsim.ros2.bridge", True)
@@ -78,7 +79,7 @@ class RobotDataManager(Node):
         
         
         for i in range(self.num_envs):
-            prefix= f"unitree_go2_{i}"
+            prefix= f"spot_{i}"
             
             self.odom_pub.append(self.create_publisher(Odometry, f"{prefix}/odom", 10))
             self.pose_pub.append(self.create_publisher(PoseStamped, f"{prefix}/pose", 10))
@@ -104,10 +105,7 @@ class RobotDataManager(Node):
             self.semantic_seg_img_sub.append(self.create_subscription(Image, 
                     f"{prefix}/front_cam/semantic_segmentation_image", 
                     lambda msg, idx=i: self.semantic_segmentation_callback(msg, idx), 10))
-        
-        # self.create_timer(0.1, self.pub_ros2_data_callback)
-        # self.create_timer(0.1, self.pub_lidar_data_callback)
-
+            
         # use wall time for lidar and odom pub
         self.odom_pose_freq = 50.0
         self.lidar_freq = 15.0
@@ -196,8 +194,8 @@ class RobotDataManager(Node):
             lidar_broadcaster = StaticTransformBroadcaster(self)
             base_lidar_transform = TransformStamped()
             base_lidar_transform.header.stamp = self.get_clock().now().to_msg()
-            base_lidar_transform.header.frame_id = f"unitree_go2_{i}/base_link"
-            base_lidar_transform.child_frame_id = f"unitree_go2_{i}/lidar_frame"
+            base_lidar_transform.header.frame_id = f"spot_{i}/base_link"
+            base_lidar_transform.child_frame_id = f"spot_{i}/lidar_frame"
 
             # Translation
             base_lidar_transform.transform.translation.x = 0.2
@@ -219,8 +217,8 @@ class RobotDataManager(Node):
             camera_broadcaster = StaticTransformBroadcaster(self)
             base_cam_transform = TransformStamped()
             # base_cam_transform.header.stamp = self.get_clock().now().to_msg()
-            base_cam_transform.header.frame_id = f"unitree_go2_{i}/base_link"
-            base_cam_transform.child_frame_id = f"unitree_go2_{i}/front_cam"
+            base_cam_transform.header.frame_id = f"spot_{i}/base_link"
+            base_cam_transform.child_frame_id = f"spot_{i}/front_cam"
 
             # Translation
             base_cam_transform.transform.translation.x = 0.4
@@ -252,7 +250,7 @@ class RobotDataManager(Node):
         odom_msg = Odometry()
         odom_msg.header.stamp = self.get_clock().now().to_msg()
         odom_msg.header.frame_id = "map"
-        odom_msg.child_frame_id = f"unitree_go2_{env_idx}/base_link"
+        odom_msg.child_frame_id = f"spot_{env_idx}/base_link"
         odom_msg.pose.pose.position.x = base_pos[0].item()
         odom_msg.pose.pose.position.y = base_pos[1].item()
         odom_msg.pose.pose.position.z = base_pos[2].item()
@@ -272,7 +270,7 @@ class RobotDataManager(Node):
         map_base_trans = TransformStamped()
         map_base_trans.header.stamp = self.get_clock().now().to_msg()
         map_base_trans.header.frame_id = "map"
-        map_base_trans.child_frame_id = f"unitree_go2_{env_idx}/base_link"
+        map_base_trans.child_frame_id = f"spot_{env_idx}/base_link"
         map_base_trans.transform.translation.x = base_pos[0].item()
         map_base_trans.transform.translation.y = base_pos[1].item()
         map_base_trans.transform.translation.z = base_pos[2].item()
@@ -281,45 +279,8 @@ class RobotDataManager(Node):
         map_base_trans.transform.rotation.z = base_rot[3].item()
         map_base_trans.transform.rotation.w = base_rot[0].item()
         self.broadcaster.sendTransform(map_base_trans)
-
-
-    # def publish_odom(self, base_pos, base_rot, base_lin_vel_b, base_ang_vel_b, env_idx):
-    #     odom_msg = Odometry()
-    #     odom_msg.header.stamp = self.get_clock().now().to_msg()
-    #     # odom_msg.header.frame_id = "map"
-    #     # odom_msg.child_frame_id = f"unitree_go2_{env_idx}/base_link"
-    #     odom_msg.header.frame_id = "odom"            # parent
-    #     odom_msg.child_frame_id = f"unitree_go2_{env_idx}/base_link"
-
-    #     odom_msg.pose.pose.position.x = base_pos[0].item()
-    #     odom_msg.pose.pose.position.y = base_pos[1].item()
-    #     odom_msg.pose.pose.position.z = base_pos[2].item()
-    #     odom_msg.pose.pose.orientation.x = base_rot[1].item()
-    #     odom_msg.pose.pose.orientation.y = base_rot[2].item()
-    #     odom_msg.pose.pose.orientation.z = base_rot[3].item()
-    #     odom_msg.pose.pose.orientation.w = base_rot[0].item()
-    #     odom_msg.twist.twist.linear.x = base_lin_vel_b[0].item()
-    #     odom_msg.twist.twist.linear.y = base_lin_vel_b[1].item()
-    #     odom_msg.twist.twist.linear.z = base_lin_vel_b[2].item()
-    #     odom_msg.twist.twist.angular.x = base_ang_vel_b[0].item()
-    #     odom_msg.twist.twist.angular.y = base_ang_vel_b[1].item()
-    #     odom_msg.twist.twist.angular.z = base_ang_vel_b[2].item()
-    #     self.odom_pub[env_idx].publish(odom_msg)
-
-    #     # transform
-    #     map_base_trans = TransformStamped()
-    #     map_base_trans.header.stamp = self.get_clock().now().to_msg()
-    #     map_base_trans.header.frame_id = "map"
-    #     map_base_trans.child_frame_id = f"unitree_go2_{env_idx}/base_link"
-    #     map_base_trans.transform.translation.x = base_pos[0].item()
-    #     map_base_trans.transform.translation.y = base_pos[1].item()
-    #     map_base_trans.transform.translation.z = base_pos[2].item()
-    #     map_base_trans.transform.rotation.x = base_rot[1].item()
-    #     map_base_trans.transform.rotation.y = base_rot[2].item()
-    #     map_base_trans.transform.rotation.z = base_rot[3].item()
-    #     map_base_trans.transform.rotation.w = base_rot[0].item()
-    #     self.broadcaster.sendTransform(map_base_trans)
     
+
     def publish_pose(self, base_pos, base_rot, env_idx):
         pose_msg = PoseStamped()
         pose_msg.header.stamp = self.get_clock().now().to_msg()
@@ -334,21 +295,19 @@ class RobotDataManager(Node):
         self.pose_pub[env_idx].publish(pose_msg)
 
     def publish_lidar_data(self, points, env_idx):
-        
         point_cloud = PointCloud2()
-        point_cloud.header.frame_id = f"unitree_go2_{env_idx}/lidar_frame"
+        point_cloud.header.frame_id = f"spot_{env_idx}/lidar_frame"
         point_cloud.header.stamp = self.get_clock().now().to_msg()
         fields = [
             PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
             PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
             PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
         ]
-        point_cloud = point_cloud2.create_cloud(point_cloud.header, fields, points.tolist())
-        
+        point_cloud = point_cloud2.create_cloud(point_cloud.header, fields, points)
         self.lidar_pub[env_idx].publish(point_cloud)        
 
     def pub_ros2_data_callback(self):
-        robot_data = self.env.unwrapped.scene["unitree_go2"].data
+        robot_data = self.env.unwrapped.scene["spot"].data
         for i in range(self.num_envs):
             self.publish_odom(robot_data.root_state_w[i, :3],
                               robot_data.root_state_w[i, 3:7],
@@ -375,7 +334,7 @@ class RobotDataManager(Node):
 
         if (pub_odom_pose):
             self.odom_pose_pub_time = time.time()
-            robot_data = self.env.unwrapped.scene["unitree_go2"].data
+            robot_data = self.env.unwrapped.scene["spot"].data
             for i in range(self.num_envs):
                 self.publish_odom(robot_data.root_state_w[i, :3],
                                 robot_data.root_state_w[i, 3:7],
@@ -391,9 +350,9 @@ class RobotDataManager(Node):
                     self.publish_lidar_data(self.lidar_annotators[i].get_data()["data"].reshape(-1, 3), i)
 
     def cmd_vel_callback(self, msg, env_idx):
-        go2_ctrl.base_vel_cmd_input[env_idx][0] = msg.linear.x
-        go2_ctrl.base_vel_cmd_input[env_idx][1] = msg.linear.y
-        go2_ctrl.base_vel_cmd_input[env_idx][2] = msg.angular.z
+        spot_ctrl.base_vel_cmd_input[env_idx][0] = msg.linear.x
+        spot_ctrl.base_vel_cmd_input[env_idx][1] = msg.linear.y
+        spot_ctrl.base_vel_cmd_input[env_idx][2] = msg.angular.z
     
     def semantic_segmentation_callback(self, img, env_idx):
         bridge = CvBridge()
@@ -411,11 +370,9 @@ class RobotDataManager(Node):
     def pub_image_graph(self):
         for i in range(self.num_envs):
 
-            color_topic_name = f"unitree_go2_{i}/front_cam/color_image"
-            depth_topic_name = f"unitree_go2_{i}/front_cam/depth_image"
-            # segmentation_topic_name = f"unitree_go2_{i}/front_cam/segmentation_image"
-            # depth_cloud_topic_name = f"unitree_go2_{i}/front_cam/depth_cloud"
-            frame_id = f"unitree_go2_{i}/front_cam"
+            color_topic_name = f"spot_{i}/front_cam/color_image"
+            depth_topic_name = f"spot_{i}/front_cam/depth_image"
+            frame_id = f"spot_{i}/front_cam"
             keys = og.Controller.Keys
             og.Controller.edit(
                 {
@@ -433,7 +390,7 @@ class RobotDataManager(Node):
                     ],
 
                     keys.SET_VALUES: [
-                        ("IsaacCreateRenderProduct.inputs:cameraPrim", f"/World/envs/env_{i}/Go2/base/front_cam"),
+                        ("IsaacCreateRenderProduct.inputs:cameraPrim", f"/World/envs/env_{i}/spot/base/front_cam"),
                         ("IsaacCreateRenderProduct.inputs:enabled", True),
                         ("IsaacCreateRenderProduct.inputs:height", 480),
                         ("IsaacCreateRenderProduct.inputs:width", 640),
@@ -468,8 +425,8 @@ class RobotDataManager(Node):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            topic_name = f"unitree_go2_{i}/front_cam/color_image"
-            frame_id = f"unitree_go2_{i}/front_cam"
+            topic_name = f"spot_{i}/front_cam/color_image"
+            frame_id = f"spot_{i}/front_cam"
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(sd.SensorType.Rgb.name)
             
@@ -492,8 +449,8 @@ class RobotDataManager(Node):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            topic_name = f"unitree_go2_{i}/front_cam/depth_image"
-            frame_id = f"unitree_go2_{i}/front_cam"
+            topic_name = f"spot_{i}/front_cam/depth_image"
+            frame_id = f"spot_{i}/front_cam"
 
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
@@ -518,9 +475,9 @@ class RobotDataManager(Node):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            topic_name = f"unitree_go2_{i}/front_cam/semantic_segmentation_image"
-            label_topic_name = f"unitree_go2_{i}/front_cam/semantic_segmentation_label"                       
-            frame_id = f"unitree_go2_{i}/front_cam"
+            topic_name = f"spot_{i}/front_cam/semantic_segmentation_image"
+            label_topic_name = f"spot_{i}/front_cam/semantic_segmentation_label"                       
+            frame_id = f"spot_{i}/front_cam"
 
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
@@ -555,8 +512,8 @@ class RobotDataManager(Node):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            topic_name = f"unitree_go2_{i}/front_cam/depth_cloud"
-            frame_id = f"unitree_go2_{i}/front_cam"
+            topic_name = f"spot_{i}/front_cam/depth_cloud"
+            frame_id = f"spot_{i}/front_cam"
 
             rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
                 sd.SensorType.DistanceToImagePlane.name
@@ -582,7 +539,7 @@ class RobotDataManager(Node):
         for i in range(self.num_envs):
             # The following code will link the camera's render product and publish the data to the specified topic name.
             render_product = self.cameras[i]._render_product_path
-            topic_name = f"unitree_go2_{i}/front_cam/info"
+            topic_name = f"spot_{i}/front_cam/info"
             frame_id = self.cameras[i].prim_path.split("/")[-1] # This matches what the TF tree is publishing.
 
             writer = rep.writers.get("ROS2PublishCameraInfo")
@@ -648,7 +605,7 @@ class RobotDataManager(Node):
                     
                     # Add class and score
                     hypothesis = ObjectHypothesisWithPose()
-                    hypothesis.hypothesis.class_id = self.model.names[class_id]#str(class_id)
+                    hypothesis.hypothesis.class_id = str(class_id)
                     hypothesis.hypothesis.score = score
                     det.results.append(hypothesis)
                     det_array_msg.detections.append(det)
@@ -676,7 +633,7 @@ class RobotDataManager(Node):
                     
                     # Create 3D marker for visualization
                     marker = Marker()
-                    marker.header.frame_id = f"unitree_go2_{env_idx}/front_cam"
+                    marker.header.frame_id = f"spot_{env_idx}/front_cam"
                     marker.header.stamp = self.get_clock().now().to_msg()
                     marker.id = idx
                     marker.type = Marker.CUBE
@@ -710,52 +667,3 @@ class RobotDataManager(Node):
             
         except Exception as e:
             self.get_logger().error(f'Error in image_callback: {str(e)}')
-
-
-    # def image_callback(self, msg, env_idx):
-    #     try:
-    #         # Convert ROS Image to OpenCV image
-    #         cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-            
-    #         # Run YOLO detection
-    #         results = self.model(cv_image, verbose=False)
-            
-    #         # Mini-map (black background)
-    #         map_img = np.zeros((self.map_size, self.map_size, 3), dtype=np.uint8)
-            
-    #         # Get robot pose from odometry (map frame)
-    #         robot_pos = self.get_robot_position(env_idx)  # implement this function
-    #         robot_pixel = self.world_to_map(robot_pos)
-    #         cv2.circle(map_img, robot_pixel, self.robot_radius, (0, 255, 0), -1)
-
-    #         # Process each YOLO detection
-    #         det_array_msg = Detection2DArray()
-    #         det_array_msg.header = msg.header
-    #         marker_array = MarkerArray()
-    #         for idx, result in enumerate(results[0].boxes.data):
-    #             box = result[:4].cpu().numpy()
-    #             score = float(result[4])
-    #             class_id = int(result[5])
-    #             if score >= self.confidence_threshold:
-    #                 # Draw detection on camera
-    #                 cv2.rectangle(cv_image, (int(box[0]), int(box[1])), 
-    #                             (int(box[2]), int(box[3])), (0, 255, 0), 2)
-    #                 label = f"{self.model.names[class_id]}: {score:.2f}"
-    #                 cv2.putText(cv_image, label, (int(box[0]), int(box[1]) - 10),
-    #                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
-    #                 # Estimate object position in map frame using depth (simplified)
-    #                 depth = self.get_depth_at_pixel(env_idx, int((box[0]+box[2])/2), 
-    #                                                 int((box[1]+box[3])/2))
-    #                 obj_world_pos = self.transform_camera_to_map(robot_pos, depth, box)
-    #                 obj_pixel = self.world_to_map(obj_world_pos)
-    #                 cv2.circle(map_img, obj_pixel, self.obj_radius, (0, 0, 255), -1)
-
-    #         # Combine camera feed and mini-map
-    #         combined = cv2.hconcat([cv_image, cv2.resize(map_img, (cv_image.shape[1], cv_image.shape[0]))])
-    #         cv2.imshow(f"Env {env_idx} Camera + Mini-Map", combined)
-    #         cv2.waitKey(1)
-
-    #     except Exception as e:
-    #         self.get_logger().error(f'Error in image_callback: {str(e)}')
-
