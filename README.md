@@ -13,7 +13,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
 - Spot has also been added to the repository. You can now use both Spot and Go2 with full features
 
   
- <img src="media/spot.png" width="700"/>  <img src="media/intro.gif" width="700"/> 
+ <img src="media/spot.png" width="1000"/>  <img src="media/intro.gif" width="1000"/> 
 
 
 
