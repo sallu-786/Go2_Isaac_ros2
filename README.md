@@ -24,16 +24,17 @@ Isaac-Sim 5.0.0 and IsaacLab 2.2.0 support ```Python 3.11```. However, Ubuntu 22
    - [Front Camera](#32-front-camera)  
    - [LIDAR](#33-lidar)  
    - [Odometry and Localization](#34-odometry-and-localization)  
-4. [Simulation Environments & Settings](#4-simulation-environments--settings)  
-   - [Launch different simulation environments](#41-launch-different-simulation-environments)  
-   - [Launch different Policy/Algorithms](#42-launch-different-policyalgorithms)  
-   - [Load custom checkpoints](#43-load-custom-checkpoints)  
-   - [Launch multiple robots in the environment](#44-launch-multiple-robots-in-the-environment)  
-   - [Change Yolo settings](#45-change-yolo-settings)  
-5. [MCP Usage](#5-mcp-usage)  
-6. [Acknowledgement](#6-acknowledgement)  
-7. [Citation](#7-citation)  
-8. [Contact](#8-contact)  
+4. [Simulation Environments & Settings](#4-simulation-environments--settings)
+   - [Launch different robots](#41-launch-different-robots)
+   - [Launch different simulation environments](#42-launch-different-simulation-environments)  
+   - [Launch different Policy/Algorithms](#43-launch-different-policyalgorithms)  
+   - [Load custom checkpoints](#44-load-custom-checkpoints)  
+   - [Launch multiple robots in the environment](#45-launch-multiple-robots-in-the-environment)  
+   - [Change Yolo settings](#46-change-yolo-settings)  
+6. [MCP Usage](#5-mcp-usage)  
+7. [Acknowledgement](#6-acknowledgement)  
+8. [Citation](#7-citation)  
+9. [Contact](#8-contact)  
 
 ---
 
@@ -119,7 +120,7 @@ Here is a categorized list of ROS 2 topics available for the Unitree Go2 and Spo
 ## 4. Simulation Environments & settings
 The simulation environments and settings can be changed in [sim.yaml](<cfg/sim.yaml>) config file. 
 
-### 4.1 Launch different Robots:
+### 4.1 Launch different robots:
  To change the robot, please change the ```robot``` in  [sim.yaml](<cfg/sim.yaml>). Currently Spot and Go2 are available.
  At the moment you cannot select both at same time.
 
