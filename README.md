@@ -1,4 +1,4 @@
-#  Isaac Sim Unitree Go2 ROS2
+#  Isaac Sim Unitree Go2/Spot ROS2
 [![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://docs.python.org/3/whatsnew/3.10.html)
 [![ROS2](https://img.shields.io/badge/ROS2-Humble-orange.svg)](https://docs.ros.org/en/humble/index.html)
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-4.5.0-red.svg)](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/index.html)
