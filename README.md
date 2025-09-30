@@ -24,7 +24,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
 
 ## Table of Contents
 1. [Installation Guide](#1-installation-guide)  
-2. [Run Unitree Go2 Simulation](#2-run-unitree-go2-simulation)  
+2. [Run Unitree Go2 Simulation](#2-run-unitree-go2/spot-simulation)  
 3. [ROS2 Topics and Visualization](#3-ros2-topics-and-visualization)  
    - [Command and Control](#31-command-and-control)  
    - [Front Camera](#32-front-camera)  
@@ -67,7 +67,7 @@ conda activate env_isaaclab
 pip install -r requirements.txt
 ```
 
-## 2. Run Unitree Go2 Simulation 
+## 2. Run Unitree Go2/Spot Simulation 
 To run the simulation, please use the following command:
 ```
 cd ~/Go2_Isaac_ros2
