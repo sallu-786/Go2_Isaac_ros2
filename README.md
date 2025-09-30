@@ -94,6 +94,8 @@ If you dont see anything click add button and from topic list select topic you w
 ![rviz add](<media/rviz_add.png>)
 
 Here is a categorized list of ROS 2 topics available for the Unitree Go2 and Spot.
+
+
 If using spot you will see spot_0 instead of unitree_go2_0:
 
 ### 3.1 Command and Control  
