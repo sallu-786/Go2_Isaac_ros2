@@ -101,7 +101,7 @@ If you dont see anything click add button and from topic list select topic you w
 Here is a categorized list of ROS 2 topics available for the Unitree Go2 and Spot.
 
 
-**Note:** If using spot you will see spot_0 instead of unitree_go2_0. **0** indicates the index as there can be multiple robots:
+**Note:** If using spot you will see spot_0 instead of unitree_go2_0. **<0>** indicates the index as there can be multiple robots:
 
 ### 3.1 Command and Control  
 - `/unitree_go2_0/cmd_vel`:  Topic to send velocity commands to the robot for motion control.
