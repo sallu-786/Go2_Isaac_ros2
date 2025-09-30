@@ -1,13 +1,40 @@
 [project]
 name = "ros-mcp-server"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "MCP tool server for ROS using rosbridge WebSocket"
 readme = "README.md"
 requires-python = ">=3.10"
+license = { text = "Apache 2.0" }
+authors = [
+    { name = "Rohit John Varghese"},
+    { name = "Jungsoo Lee"}
+]
+
 dependencies = [
     "mcp[cli]>=1.6.0",
     "opencv-python>=4.11.0.86",
-    "websocket>=0.2.1",
     "websocket-client>=1.8.0",
-    "pyyaml",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",    # single tool for linting & formatting
+    "pytest"   # for tests
+]
+
+# ---------------- Ruff configuration ----------------
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+# Linter config moved to new section
+[tool.ruff.lint]
+select = ["E", "F", "I"]  # basic errors, pyflakes, import sorting
+ignore = ["E501"]         # ignore long-line warnings (optional)
+
+# Formatter config stays here
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+docstring-code-format = true

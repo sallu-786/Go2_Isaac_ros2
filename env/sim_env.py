@@ -45,7 +45,7 @@ def create_warehouse_env():
     assets_root_path = nucleus_utils.get_assets_root_path()
     prim = get_prim_at_path("/World/Warehouse")
     prim = define_prim("/World/Warehouse", "Xform")
-    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/full_warehouse.usd"     #also--> full_warehouse.usd,, warehouse_with_forklifts.usd ,, warehouse_multiple_shelves.usd
+    asset_path = assets_root_path+"/Isaac/Environments/Simple_Warehouse/warehouse.usd"     #also--> full_warehouse.usd,, warehouse_with_forklifts.usd ,, warehouse_multiple_shelves.usd
     prim.GetReferences().AddReference(asset_path)
 
 def create_hospital_env():
