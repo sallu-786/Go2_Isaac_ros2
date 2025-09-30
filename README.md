@@ -84,7 +84,7 @@ To set your own custom keys make changes in [go2_ctrl.py](<go2/go2_ctrl.py>)
 After launching the simulation, Open a new terminal and visualize the ROS2 data in ```Rviz2```:
 ```
 cd ~/Go2_Isaac_ros2/rviz/
-rviz2 -d go2.rviz
+rviz2 -d go2.rviz         #use spot.rviz for spot
 ```
 
 you should see something like this
@@ -125,7 +125,7 @@ Here is a categorized list of ROS 2 topics available for the Unitree Go2 and Spo
 The simulation environments and settings can be changed in [sim.yaml](<cfg/sim.yaml>) config file. 
 
 ### 4.1 Launch different robots:
- To change the robot, please change the ```robot``` in  [sim.yaml](<cfg/sim.yaml>). Currently Spot and Go2 are available.
+ To change the robot, please change value of ```robot``` in  [sim.yaml](<cfg/sim.yaml>). Currently Spot and Go2 are available.
  At the moment you cannot select both at same time.
 
 ### 4.2 Launch different simulation environments
