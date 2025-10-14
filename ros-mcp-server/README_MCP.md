@@ -107,7 +107,7 @@ To run web portal ol prerequisite is step 3 (launch robsridge server). Other ste
 First of all activate the same environment being used for running ```main.py``` program (isaaclab_env) as per [README.MD](<https://github.com/sallu-786/Go2_Isaac_ros2/blob/main/README.md>) 
 
 
-**Note:** If you want to create a new seperate environment for web portal then you need to install torch and numpy as well otherwise make sure you dont update/change them or it will cause problems. After that run following command. 
+**Note:** If you want to create a new seperate environment for web portal then you need to install torch and numpy as well otherwise make sure you dont update/change them in existing environment or it will cause problems. 
 ```bash
 conda activate env_isaaclab #or activate your custom env
 pip install -r requirements_web_mcp.txt
