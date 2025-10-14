@@ -168,7 +168,7 @@ Robot can also be controlled by either giving natural language commands from LLM
 
 ![MCP](<media/mcp.gif>)
 
-![Web_Portal](<media/portal.webm>)
+![Web_Portal](<media/portal.gif>)
 
 ## 6. Acknowledgement
 Repository is built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2)
