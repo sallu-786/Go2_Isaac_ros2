@@ -6,7 +6,7 @@
 ![flow diagram](<img/framework.png>)
 
 
-The ROS MCP Server is designed to support robots in performing complex tasks and adapting effectively to various environments by providing a set of functions that transform natural language commands, entered by a user through an LLM, into ROS commands for robot control. Furthermore, by utilizing ``rosbridge``, it is configured to operate with both ``ROS`` and ``ROS2`` systems, and its WebSocket-based communication enables broad applicability across diverse platforms.
+The ROS MCP Server with Web Portal is designed to support robots in performing complex tasks and adapting effectively to various environments by providing a set of functions that transform natural language commands, entered by a user through an LLM, into ROS commands for robot control. Furthermore, by utilizing ``rosbridge``, it is configured to operate with both ``ROS`` and ``ROS2`` systems, and its WebSocket-based communication enables broad applicability across diverse platforms. not only that using this MCP Server I have created a web portal that makes it super easy to go through hundreds of topics and services without typing a single command and visualzie it for easy intuition, see live camera stream wth description from LLM and ability to control robots with Web-UI.
 
 ## Supported Types
 
