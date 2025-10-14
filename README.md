@@ -164,9 +164,11 @@ inside [go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>).
 
 
 ## 5. MCP LLM and Web Portal Usage
-Robot can also be controlled by giving natural language commands from claude desktop. Read details in [README_MCP](<ros-mcp-server/README_MCP.md>)
+Robot can also be controlled by either giving natural language commands from LLM or via web portal. Read details in [README_MCP](<ros-mcp-server/README_MCP.md>)
 
 ![MCP](<media/mcp.gif>)
+
+![Web_Portal](<media/portal.webm>)
 
 ## 6. Acknowledgement
 Repository is built upon the work of [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2)
