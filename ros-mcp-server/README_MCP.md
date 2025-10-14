@@ -111,4 +111,4 @@ conda activate isaaclab_env #or activate your own
 pip install -r requirements_web_mcp.txt
 python web_portal.py
 ```
-To run the LLM description dont forget to add your own key in confg.py
+To run the LLM description dont forget to add your own key in [config.py](<config.py>) or use Ollama for local hosting 
