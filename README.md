@@ -15,10 +15,6 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
   **Note:** my implementation is different from source repository. For details check [acknowledgment](#6-acknowledgement)
 - further updates in ros-mcp-server that includes a web portal making it super easy to go through ros topics and services with Graph based visualization for details check [MCP LLM and Web Portal Usage](#5-mcp-llm-and-web-portal-usage) 
   
- <img src="media/spot.png" width="1000"/>  <img src="media/intro.gif" width="1000"/> 
-
-
-
 ---
 
 ## Table of Contents
@@ -128,6 +124,10 @@ The simulation environments and settings can be changed in [sim.yaml](<cfg/sim.y
 ### 4.1 Launch different robots:
  To change the robot, please change value of ```robot``` in  [sim.yaml](<cfg/sim.yaml>). Currently Spot and Go2 are available.
  At the moment you cannot select both at same time.
+
+ Here is example of spawning 3 spot robots
+
+  <img src="media/spot.png" width="1000"/>  <img src="media/intro.gif" width="1000"/> 
 
 ### 4.2 Launch different simulation environments
 The current implementation contains a few environments which follows standard Isaac Sim method for importing USD environments(from cloud). To change the environment, please change the ```env_name``` in  [sim.yaml](<cfg/sim.yaml>). Current available environments:
