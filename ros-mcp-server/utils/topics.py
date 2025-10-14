@@ -675,3 +675,16 @@ def subscribe_for_trigger(
         # Timeout
         ws_manager.send({"op": "unsubscribe", "topic": topic})
         return {"triggered": False, "reason": "Timeout waiting for trigger"}
+    
+def echo_topic_once(ws_manager, topic: str, msg_type: str) -> dict:
+    """Echo a single message from a ROS topic and return it as dict."""
+    subscribe_msg = {"op": "subscribe", "topic": topic, "type": msg_type}
+
+    with ws_manager:
+        ws_manager.send(subscribe_msg)
+        response = ws_manager.receive(timeout=1.0)
+        if response:
+            msg_data = parse_json(response)
+            if msg_data and msg_data.get("op") == "publish" and msg_data.get("topic") == topic:
+                return msg_data.get("msg", {})
+    return {}

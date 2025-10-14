@@ -1,0 +1,10 @@
+mcp[cli]
+websocket-client
+gradio
+fastmcp
+litellm
+opencv-python
+matplotlib
+networkx
+#torch              #use pre-installed torch if using isaaclab_env 
+#numpy==1.26.4      #use pre-installed numpy if using isaaclab_env

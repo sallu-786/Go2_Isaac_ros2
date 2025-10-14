@@ -1,7 +1,6 @@
 import json
 import threading
 from typing import Optional, Union
-
 import websocket
 
 

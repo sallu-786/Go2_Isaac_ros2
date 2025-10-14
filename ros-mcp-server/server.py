@@ -1,17 +1,13 @@
 from typing import Optional
 from mcp.server.fastmcp import FastMCP
-from utils import ( 
-    WebSocketManager,
-    ping_robot, connect_to_robot,
-    list_services, list_services_detail, service_type, service_detail, service_nodes, call_service,
-    list_topics, topic_type, topic_message, topic_publishers, topic_subscribers,
-    publish_once, subscribe_once, publish_for_duration, subscribe_for_duration,
-    subscribe_for_trigger,
-    )
 
-# ROS bridge connection settings
-ROSBRIDGE_IP = "127.0.0.1"  # Default is localhost. Replace with your local IP or set using the LLM.
-ROSBRIDGE_PORT = 9090  # Rosbridge default is 9090. Replace with your rosbridge port or set using the LLM.
+from utils.services import list_services, list_services_detail, service_type, service_detail, service_nodes, call_service
+from utils.network import ping_robot, connect_to_robot
+from utils.websocket_manager import WebSocketManager
+from utils.topics import list_topics, topic_type, topic_message, topic_publishers, topic_subscribers, publish_once, subscribe_once, \
+      publish_for_duration, subscribe_for_duration, subscribe_for_trigger, echo_topic_once
+
+from config import ROSBRIDGE_IP, ROSBRIDGE_PORT 
 
 
 # Initialize MCP server and WebSocket manager
@@ -20,11 +16,11 @@ ws_manager = WebSocketManager(
     ROSBRIDGE_IP, ROSBRIDGE_PORT, default_timeout=5.0)  # Increased default timeout for ROS operations
 
 
-## ############################################################################################## ##
+## ################################################################################################
 ##
 ##                       ROS TOPICS
 ##
-## ############################################################################################## ##
+## ################################################################################################
 
 @mcp.tool(description=("Fetch available topics from the ROS bridge.     Example:get_topics()"))
 def get_list_topics() -> dict:
@@ -125,6 +121,18 @@ def get_subscribe_for_duration(
 def get_publish_for_duration(
     topic: str = "", msg_type: str = "", messages: list = [], durations: list = []) -> dict:
     return publish_for_duration (ws_manager, topic, msg_type, messages, durations)
+
+
+@mcp.tool(
+    description=(
+        "Echo a single message from a ROS topic once."
+        "Example:"
+        "echo_topic_once_tool(topic='/odom', msg_type='nav_msgs/msg/Odometry')"
+    )
+)
+def get_echo_topic_once(topic: str = "", msg_type: str = "") -> dict:
+    return echo_topic_once(ws_manager, topic, msg_type)
+
 
 
 ## ############################################################################################## ##
