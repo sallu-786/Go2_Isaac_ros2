@@ -224,7 +224,12 @@ def main():
                             outputs=graph_image
                         )
 
-        demo.launch(pwa=True, share=False)
+        demo.launch(server_name = "0.0.0.0", 
+                    server_port = 7860,
+                    pwa=True, 
+                    share=False, #sharing will make a cloud link that allows access over the internet
+                    mcp_server=True, #web_portal serves as mcp_server as well
+                   )
 
 if __name__ == "__main__":
     main()
