@@ -103,7 +103,7 @@ Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has sa
 
 ## 6. Launch Web Portal 
 To run web portal ol prerequisite is step 3 (launch robsridge server). Other steps can be ignored
-### 5. Activate the evironment 
+### 6.1 Activate the evironment 
 First of all activate the same environment being used for running ```main.py``` program (isaaclab_env) as per [README.MD](<https://github.com/sallu-786/Go2_Isaac_ros2/blob/main/README.md>) 
 
 
@@ -114,10 +114,14 @@ cd ~/Go2_Isaac_ros2/ros-mcp-server
 pip install -r requirements_web_mcp.txt
 python web_portal.py
 ```
-
-- To run the LLM description dont forget to add your own key in [config.py](<config.py>) or use [Ollama](https://ollama.com/download) for local hosting. 
-- If you want to use camera and controller for a different robot make sure you change the name of topics in [config.py](<config.py>)
-- By default an image is sent to LLM every 5 seconds for description update. You can change it in [data_stream.py](<web_utils/data_stream.py>) 
-
 ![Web_Portal](<img/portal.png>)
+
+### 6.1 Changing Portal Settings 
+- You can choose which services to run in portal by setting parameters to True/False in config.py
+- To run the LLM description dont forget to add your own key in [config.py](<config.py>) or use [Ollama](https://ollama.com/download) for local hosting. 
+- By default an image is sent to LLM every 5 seconds for description update. You can change it in [data_stream.py](<web_utils/data_stream.py>)
+- If you want to use camera and controller for a different robot make sure you change the name of topics in [config.py](<config.py>)
+- To share Web-portal with many users across network, Checkout [Gradio-Mcp-Server](https://www.gradio.app/guides/building-mcp-server-with-gradio)
+
+
 
