@@ -117,7 +117,7 @@ python web_portal.py
 ![Web_Portal](<img/portal.png>)
 
 ### 6.1 Changing Portal Settings 
-- You can choose which services to run in portal by setting parameters to True/False in config.py
+- You can choose which services to run in portal by setting parameters to True/False in [config.py](<config.py>)
 - To run the LLM description dont forget to add your own key in [config.py](<config.py>) or use [Ollama](https://ollama.com/download) for local hosting. 
 - By default an image is sent to LLM every 5 seconds for description update. You can change it in [data_stream.py](<web_utils/data_stream.py>)
 - If you want to use camera and controller for a different robot make sure you change the name of topics in [config.py](<config.py>)
