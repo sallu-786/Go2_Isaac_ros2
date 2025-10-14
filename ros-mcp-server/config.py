@@ -1,7 +1,7 @@
-AZURE_API_BASE = "https://kant-openai-copy.openai.azure.com/"
-AZURE_OPENAI_DEPLOYMENT = "azure_openai_app_4o"  
-AZURE_API_KEY = "efcacfae66a34614b863784b8bfb3555"
-AZURE_API_VERSION="2024-12-01-preview"
+AZURE_API_BASE = ""
+AZURE_OPENAI_DEPLOYMENT = ""  
+AZURE_API_KEY = ""
+AZURE_API_VERSION=""
 
 
 
