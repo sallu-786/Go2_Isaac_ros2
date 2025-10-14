@@ -36,7 +36,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2
    - [Load custom checkpoints](#44-load-custom-checkpoints)  
    - [Launch multiple robots in the environment](#45-launch-multiple-robots-in-the-environment)  
    - [Change Yolo settings](#46-change-yolo-settings)  
-6. [MCP Web Portal Usage](#5-mcp-usage)  
+6. [MCP Web Portal Usage](#5-mcp-web-portal-usage)  
 7. [Acknowledgement](#6-acknowledgement)  
 8. [Citation](#7-citation)  
 9. [Contact](#8-contact)  
