@@ -23,7 +23,7 @@ class DataStream:
         self.base_vel_cmd_input = torch.zeros((1, 3), dtype=torch.float32)
         self.controller = Controller(cmd_vel=self.base_vel_cmd_input)
         self.cmd_publisher = self.controller.create_publisher(Twist,cmd_vel, 10)
-        self.description_cache = "説明待ち..."
+        self.description_cache = "waiting for connection..."
         self.desc_update_interval = 5  # seconds
         self.sleep_interval=0.05
         self.image_width=680
