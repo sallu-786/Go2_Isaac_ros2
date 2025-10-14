@@ -110,6 +110,7 @@ First of all activate the same environment being used for running ```main.py``` 
 **Note:** If you want to create a new seperate environment for web portal then you need to install torch and numpy as well otherwise make sure you dont update/change them in existing environment or it will cause problems. 
 ```bash
 conda activate env_isaaclab #or activate your custom env
+cd ~/Go2_Isaac_ros2/ros-mcp-server
 pip install -r requirements_web_mcp.txt
 python web_portal.py
 ```
