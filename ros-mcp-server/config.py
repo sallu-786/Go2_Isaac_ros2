@@ -16,7 +16,7 @@ ROSBRIDGE_IP = "127.0.0.1"  # Default is localhost. Replace with your IP of devi
 ROSBRIDGE_PORT = 9090  # Rosbridge default is 9090. 
 
 
-CAMERA_TOPIC_NAME="/spot_0/front_cam/color_image"
+CAMERA_TOPIC_NAME="/spot_0/front_cam/color_image"    #for go2 replace spot_0 wit unitree_go2_0 where 0 represent index of robot
 CMD_VEL_PUB_TOPIC_NAME="/spot_0/cmd_vel"
 
 
