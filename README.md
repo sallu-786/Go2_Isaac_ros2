@@ -164,7 +164,7 @@ inside [go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>).
 
 
 ## 5. MCP LLM and Web Portal Usage
-Robot can also be controlled by either giving natural language commands from LLM or via web portal. Read details in [README_MCP](<ros-mcp-server/README_MCP.md>)
+Robot can also be controlled by either giving natural language commands from LLM or via web portal. not only that you can share it with others and they dont have to install anything. Read details in [README_MCP](<ros-mcp-server/README_MCP.md>)
 
 ![MCP](<media/mcp.gif>)
 
