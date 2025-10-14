@@ -102,10 +102,10 @@ Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has sa
 
 
 ## 6. Launch Web Portal 
-To run web portal you need to do step 3 (launch robsridge server). Other steps can be ignored
+To run web portal ol prerequisite is step 3 (launch robsridge server). Other steps can be ignored
 ### 5. Activate the evironment 
-First of all activate the same environment being used for running main program (isaaclab_env)
-after that run following command
+First of all activate the same environment being used for running ```main.py``` program (isaaclab_env) as per [README.MD](<https://github.com/sallu-786/Go2_Isaac_ros2/blob/main/README.md>) 
+after that run following command. Make sure you dont update torch or numpy or it will cause problems
 ```bash
 pip install -r requirements_web_mcp.txt
 python web_portal.py
