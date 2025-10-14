@@ -118,6 +118,7 @@ python web_portal.py
 
 ### 6.1 Changing Portal Settings 
 - You can choose which services to run in portal by setting parameters to True/False in [config.py](<config.py>)
+- Button location might be different depending on screen size. You can adjust it in [web_portal.py](<web_portal.py>) from line 90 onwards
 - To run the LLM description dont forget to add your API key in [config.py](<config.py>) or use [Ollama](https://ollama.com/download) for local hosting. To change prompt go to [llm_describer.py](<web_utils/llm_describer.py>)
 - To add a new service make a new code such as lidar.py and initialize it in [data_stream.py](<web_utils/data_stream.py>). From here all data needed for web_portal is acquired. All data is is gathered in data_stream class whose object is then called by web_portal.
 - By default an image is sent to LLM every 5 seconds for description update. You can change it in [data_stream.py](<web_utils/data_stream.py>) 
