@@ -76,7 +76,7 @@ Paste the code in mcp.json file
 
 You can find the list of functions in the [MCPFUNCTIONS.md](MCPFUNCTIONS.md).
 
-## 3. Launch Server
+## 3. Launch Rosbridge Server
 ### 1. Set IP and Port to connect rosbridge.
 - Open `server.py` and change your `LOCAL_IP`, `ROSBRIDGE_IP` and `ROSBRIDGE_PORT`. (`ROSBRIDGE_PORT`'s default value is `9090`)
 
@@ -101,3 +101,12 @@ Before running, make sure ```num_envs``` in [sim.yaml](<../cfg/sim.yaml>) has sa
 ![How to use](<img/run_command.png>)
 
 
+## 6. Launch Web Portal 
+To run web portal you need to do step 3 (launch robsridge server). Other steps can be ignored
+### 5. Activate the evironment 
+First of all activate the same environment being used for running main program (isaaclab_env)
+after that run following command
+```bash
+pip install -r requirements_web_mcp.txt
+python web_portal.py
+```
