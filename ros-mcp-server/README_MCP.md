@@ -115,7 +115,7 @@ pip install -r requirements_web_mcp.txt
 python web_portal.py
 ```
 
-To run the LLM description dont forget to add your own key in [config.py](<config.py>) or use [Ollama](https://ollama.com/download) for local hosting 
+To run the LLM description dont forget to add your own key in [config.py](<config.py>) or use [Ollama](https://ollama.com/download) for local hosting. If you want to use camera and controller for a different robot make sure you change the name of topics in [config.py](<config.py>)
 
 ![Web_Portal](<img/portal.png>)
 
