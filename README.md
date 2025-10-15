@@ -75,7 +75,7 @@ Once the simulation is loaded, the robot can be teleoperated by the keyboard:
 
 ```W```: Forward, ```A```: Left, ```S```: Backward, ```D```: Right, ```Z```: Left Turn, ```C```: Right Turn.
 
-To set your own custom keys make changes in [go2_ctrl.py](<go2/go2_ctrl.py>) 
+To set your own custom keys make changes in [go2_ctrl.py](<quadruped/go2/go2_ctrl.py>) [spot_ctrl.py](<quadruped/spot/spot_ctrl.py>) 
 
 
 ![preview](<media/preview.png>)
@@ -144,7 +144,7 @@ The current implementation contains a few environments which follows standard Is
 As of now there are 70 environments assets available in isaac-sim 4.5.0. see more at [Environment Assets](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html)
   
 ### 4.3 Launch different Policy/Algorithms 
-To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>) and use any of the following values 
+To Launch Policy other than default (```ActorCritic```), go to [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>)/[spot_ctrl_cfg.py](<quadruped/spot/spot_ctrl_cfg.py>) and use any of the following values 
   - ```ActorCriticRecurrent```
   - ```StudentTeacher```
   - ```StudentTeacherRecurrent```
@@ -153,14 +153,14 @@ Algorithm by default is ```PPO``` you may also use ```Distillation```. For compa
 
 ### 4.4 Load custom checkpoints
 
-Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitree_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>).
+Pretrained model (policy files) for flat and rough terrain are available in ```ckpts/unitree_go2``` folder. If you want to load your own policy, place the file in the folder and change the value for 'load_checkpoint' in [go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>)/[spot_ctrl_cfg.py](<quadruped/spot/spot_ctrl_cfg.py>)..
 
 ### 4.5 Launch multiple robots in the environment
 This repository supports running multiple Unitree Go2 robots and the number of robots can by changed by the ```num_envs``` parameter in the config file [sim.yaml](<cfg/sim.yaml>).
 
 ### 4.6 Change Yolo settings
 Yolo models should be placed inside [yolo](<yolo>) folder Confidence threshold for classifying object is set to **0.7**. To customize model and confidence value, change the ```self.model``` and ```self.confidence_threshold``` 
-inside [go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>).
+inside [go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>)/[spot_ros2_bridge.py](<ros2/spot_ros2_bridge.py>).
 
 
 ## 5. MCP LLM and Web Portal Usage
@@ -186,7 +186,7 @@ work is supported by [Toyota-Boshoku](https://www.toyota-boshoku.com/)
   title = "Unitree Go2 in Isaac-Sim",
   year = "2025",
   url = "https://github.com/sallu-786/Go2_Isaac_ros2",
-  note = "Version 1.1.0"
+  note = "Version 1.2.1"
 }
 ```
 ## 8. Contact
