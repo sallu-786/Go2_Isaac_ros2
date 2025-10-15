@@ -75,7 +75,7 @@ Once the simulation is loaded, the robot can be teleoperated by the keyboard:
 
 ```W```: Forward, ```A```: Left, ```S```: Backward, ```D```: Right, ```Z```: Left Turn, ```C```: Right Turn.
 
-To set your own custom keys make changes in [go2_ctrl.py](<quadruped/go2/go2_ctrl.py>) [spot_ctrl.py](<quadruped/spot/spot_ctrl.py>) 
+To set your own custom keys make changes in [go2_ctrl.py](<quadruped/go2/go2_ctrl.py>)/[spot_ctrl.py](<quadruped/spot/spot_ctrl.py>) 
 
 
 ![preview](<media/preview.png>)
