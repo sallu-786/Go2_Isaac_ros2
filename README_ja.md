@@ -21,28 +21,28 @@ Unitree Go2 の Isaac-Sim(4.5.0) と IsaacLab(2.1.0-1) 向けシミュレーシ�
 ---
 
 ## 目次
-1. [Installation Guide](#1-installation-guide)  
-2. [Run Unitree Go2/Spot Simulation](#2-run-unitree-go2/spot-simulation)  
-3. [ROS2 Topics and Visualization](#3-ros2-topics-and-visualization)  
-   - [Command and Control](#31-command-and-control)  
-   - [Front Camera](#32-front-camera)  
-   - [LIDAR](#33-lidar)  
-   - [Odometry and Localization](#34-odometry-and-localization)  
-4. [Simulation Environments & Settings](#4-simulation-environments--settings)
-   - [Launch different robots](#41-launch-different-robots)
-   - [Launch different simulation environments](#42-launch-different-simulation-environments)  
-   - [Launch different Policy/Algorithms](#43-launch-different-policyalgorithms)  
-   - [Load custom checkpoints](#44-load-custom-checkpoints)  
-   - [Launch multiple robots in the environment](#45-launch-multiple-robots-in-the-environment)  
-   - [Change Yolo settings](#46-change-yolo-settings)  
-6. [MCP LLM and Web Portal Usage](#5-mcp-llm-and-web-portal-usage)  
-7. [Acknowledgement](#6-acknowledgement)  
-8. [Citation](#7-citation)  
-9. [Contact](#8-contact)  
+1. [インストールガイド](#1-インストールガイド)  
+2. [Unitree Go2/Spot シミュレーションの実行](#2-unitree-go2spot-シミュレーションの実行)  
+3. [ROS2 トピックと可視化](#3-ros2-トピックと可視化)  
+  - [コマンドと制御](#31-コマンドと制御)  
+  - [前方カメラ](#32-前方カメラ)  
+  - [LIDAR（ライダー）](#33-lidarライダー)  
+  - [オドメトリと位置推定](#34-オドメトリと位置推定)  
+4. [シミュレーション環境と設定](#4-シミュレーション環境と設定)
+  - [異なるロボットの起動](#41-異なるロボットの起動)
+  - [異なるシミュレーション環境の起動](#42-異なるシミュレーション環境の起動)  
+  - [異なるポリシー/アルゴリズムの起動](#43-異なるポリシーアルゴリズムの起動)  
+  - [カスタムチェックポイントの読み込み](#44-カスタムチェックポイントの読み込み)  
+  - [複数ロボットを環境で起動する](#45-複数ロボットを環境で起動する)  
+  - [Yolo 設定の変更](#46-yolo-設定の変更)  
+6. [MCP LLM とウェブポータルの利用方法](#5-mcp-llm-とウェブポータルの利用方法)  
+7. [謝辞](#6-謝辞)  
+8. [引用](#7-引用)  
+9. [連絡先](#8-連絡先)
 
 ---
 
-## 1. Installation Guide
+## 1. インストールガイド
 **ステップ I:** 最新の Isaac Sim と Isaac Lab をインストールするには、公式ドキュメント [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab//v2.1.1/source/setup/installation/index.html) に従ってください。
 
 **ステップ II:** 公式インストールガイドに従って [ROS2 Humble](https://docs.ros.org/en/humble/index.html) をインストールしてください。
@@ -65,7 +65,7 @@ conda activate env_isaaclab
 pip install -r requirements.txt
 ```
 
-## 2. Run Unitree Go2/Spot Simulation 
+## 2. Unitree Go2/Spot シミュレーションの実行 
 シミュレーションを実行するには、次のコマンドを使用してください:
 ```
 cd ~/Go2_Isaac_ros2
@@ -80,7 +80,7 @@ python main.py
 
 ![preview](<media/preview.png>)
 
-## 3. ROS2 Topics and Visualization
+## 3. ROS2 トピックと可視化
 シミュレーションを起動した後、新しいターミナルを開き、Rviz2 で ROS2 データを可視化します:
 ```
 cd ~/Go2_Isaac_ros2/rviz/
@@ -103,28 +103,28 @@ rviz2 -d go2.rviz         #use spot.rviz for spot
 
 **注:** Spot を使用している場合、`spot_0` の代わりに `unitree_go2_0` が表示されます。<**0**> はインデックスを示し、複数ロボットが存在する可能性があることを意味します。
 
-### 3.1 Command and Control  
+### 3.1 コマンドと制御  
 - `/unitree_go2_0/cmd_vel`: ロボットの運動制御のために速度コマンドを送るトピックです。
 
-### 3.2 Front Camera 
+### 3.2 前方カメラ 
 - `/unitree_go2_0/front_cam/color_image`: RGB カラー画像を配信します
 - `/unitree_go2_0/front_cam/depth_image`: 深度画像を配信します
 - `/unitree_go2_0/front_cam/semantic_segmentation_image_vis`: セマンティックセグメンテーション画像を配信します
 - `/unitree_go2_0/front_cam/info`: カメラ情報（内パラメータなど）を配信します
 - `unitree_go2_0/front_cam/detection_image`: Yolo ベースの物体検出を施した画像を配信します
 
-### 3.3 LIDAR  
+### 3.3 LIDAR（ライダー）  
 - `/unitree_go2_0/lidar/point_cloud`: ロボットの LIDAR センサで生成されたポイントクラウドを配信します。
 
-### 3.4 Odometry and Localization  
+### 3.4 オドメトリと位置推定  
 - `/unitree_go2_0/odom`: ロボットの位置、姿勢、速度を含むオドメトリデータを配信します。
 - `/unitree_go2_0/pose`: ワールドフレームにおける現在のロボットのポーズを配信します。
 
 
-## 4. Simulation Environments & settings
+## 4. シミュレーション環境と設定
 シミュレーション環境と設定は [sim.yaml](<cfg/sim.yaml>) の設定ファイルで変更できます。 
 
-### 4.1 Launch different robots:
+### 4.1 異なるロボットの起動
  ロボットを変更するには、[sim.yaml](<cfg/sim.yaml>) の `robot` の値を変更してください。現在は Spot と Go2 が利用可能です。
  現時点では同時に両方を選択することはできません。
 
@@ -132,7 +132,7 @@ rviz2 -d go2.rviz         #use spot.rviz for spot
 
   <img src="media/spot.png" width="1000"/>  
 
-### 4.2 Launch different simulation environments
+### 4.2 異なるシミュレーション環境の起動
 現在の実装には、USD 環境（クラウドからの）をインポートする標準的な Isaac Sim の方法に従った複数の環境が含まれています。環境を変更するには、[sim.yaml](<cfg/sim.yaml>) の `env_name` を変更してください。現在利用可能な環境:
 - `warehouse`: Isaac Sim のシンプルな倉庫環境（warehouse カテゴリのさらなるオプションについては [sim_env.py](<env/sim_env.py>) 内の関数のパス値を変更してください）
 - `obstacle`: 障害物フィールド環境。（密にするか疎にするかは [sim_env.py](<env/sim_env.py>) の `num_obstacles` 変数を変更してください）
@@ -143,7 +143,7 @@ rviz2 -d go2.rviz         #use spot.rviz for spot
 
 現時点で isaac-sim 4.5.0 には 70 の環境アセットがあります。詳細は [Environment Assets](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_environments.html) を参照してください。
   
-### 4.3 Launch different Policy/Algorithms 
+### 4.3 異なるポリシー/アルゴリズムの起動 
 デフォルト（`ActorCritic`）以外のポリシーを起動するには、[go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>)/[spot_ctrl_cfg.py](<quadruped/spot/spot_ctrl_cfg.py>) を参照し、次のいずれかの値を使用してください:
   - `ActorCriticRecurrent`
   - `StudentTeacher`
@@ -151,25 +151,25 @@ rviz2 -d go2.rviz         #use spot.rviz for spot
 
 アルゴリズムはデフォルトで `PPO` です。`Distillation` も使用できます。互換性の確認や詳細については [API_docs](https://isaac-sim.github.io/IsaacLab/main/source/api/lab_rl/isaaclab_rl.html) を参照してください。
 
-### 4.4 Load custom checkpoints
+### 4.4 カスタムチェックポイントの読み込み
 
 フラットおよびラフ地形向けの事前学習済みモデル（ポリシーファイル）は `ckpts/unitree_go2` フォルダにあります。独自のポリシーをロードしたい場合は、ファイルをフォルダに置き、[go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>)/[spot_ctrl_cfg.py](<quadruped/spot/spot_ctrl.py>) の `load_checkpoint` の値を変更してください。
 
-### 4.5 Launch multiple robots in the environment
+### 4.5 環境内で複数ロボットを起動する
 このリポジトリは複数の Unitree Go2 ロボットの実行をサポートしており、ロボット数は設定ファイル [sim.yaml](<cfg/sim.yaml>) の `num_envs` パラメータで変更できます。
 
-### 4.6 Change Yolo settings
+### 4.6 Yolo 設定の変更
 Yolo モデルは [yolo](<yolo>) フォルダに配置する必要があります。クラス分類の信頼度閾値は **0.7** に設定されています。モデルと信頼度の値をカスタマイズするには、[go2_ros2_bridge.py](<ros2/go2_ros2_bridge.py>)/[spot_ros2_bridge.py](<ros2/spot_ros2_bridge.py>) 内の `self.model` と `self.confidence_threshold` を変更してください。
 
 
-## 5. MCP LLM and Web Portal Usage
+## 5. MCP LLM とウェブポータルの利用方法
 ロボットは、LLM に自然言語コマンドを与えるかウェブポータルを介して制御できます。さらに、インストールなしで他者と共有することも可能です。詳細は [README_MCP](<ros-mcp-server/README_MCP.md>) を参照してください。
 
 ![MCP](<media/mcp.gif>)
 
 ![Web_Portal](<media/portal.gif>)
 
-## 6. Acknowledgement
+## 6. 謝辞
 本リポジトリは [isaac-go2-ros2](https://github.com/Zhefan-Xu/isaac-go2-ros2) の作業に基づいて構築されています。
 
 Go2 コントローラは [go2_omniverse](https://github.com/abizovnuralem/go2_omniverse) に実装された RL コントローラに基づいています。
@@ -178,7 +178,7 @@ MCP コントロールは [ros-mcp-server](https://github.com/lpigeon/ros-mcp-se
 
 本研究は [Toyota-Boshoku](https://www.toyota-boshoku.com/) の支援を受けています。
 
-## 7. Citation
+## 7. 引用
 ```
 @MISC{Suleman2025,
   author = "Muhammad Suleman",
@@ -188,5 +188,5 @@ MCP コントロールは [ros-mcp-server](https://github.com/lpigeon/ros-mcp-se
   note = "Version 1.2.1"
 }
 ```
-## 8. Contact
+## 8. 連絡先
 sulemanmuhammad08@gmail.com
