@@ -175,15 +175,3 @@ Go2 コントローラは [go2_omniverse](https://github.com/abizovnuralem/go2_o
 
 MCP コントロールは [ros-mcp-server](https://github.com/lpigeon/ros-mcp-server) に基づいています。
 
-## 7. 引用
-```
-@MISC{Suleman2025,
-  author = "Muhammad Suleman",
-  title = "Unitree Go2 in Isaac-Sim",
-  year = "2025",
-  url = "https://github.com/sallu-786/Go2_Isaac_ros2",
-  note = "Version 1.2.1"
-}
-```
-## 8. 連絡先
-suleman.muhammad@toyota-boshoku.com
