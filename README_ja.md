@@ -37,7 +37,8 @@ Unitree Go2 の Isaac-Sim(4.5.0) と IsaacLab(2.1.0-1) 向けシミュレーシ�
     - [Yolo 設定の変更](#46-yolo-設定の変更)  
 5. [MCP LLM とウェブポータルの利用方法](#5-mcp-llm-とウェブポータルの利用方法)  
 6. [謝辞](#6-謝辞)  
-
+7. [引用](#7-引用)  
+8. [連絡先](#8-連絡先)
 
 ---
 
@@ -175,3 +176,17 @@ Go2 コントローラは [go2_omniverse](https://github.com/abizovnuralem/go2_o
 
 MCP コントロールは [ros-mcp-server](https://github.com/lpigeon/ros-mcp-server) に基づいています。
 
+本研究は [Toyota-Boshoku](https://www.toyota-boshoku.com/) の支援を受けています。
+
+## 7. 引用
+```
+@MISC{Suleman2025,
+  author = "Muhammad Suleman",
+  title = "Unitree Go2 in Isaac-Sim",
+  year = "2025",
+  url = "https://github.com/sallu-786/Go2_Isaac_ros2",
+  note = "Version 1.2.1"
+}
+```
+## 8. 連絡先
+sulemanmuhammad08@gmail.com
