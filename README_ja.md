@@ -35,10 +35,9 @@ Unitree Go2 の Isaac-Sim(4.5.0) と IsaacLab(2.1.0-1) 向けシミュレーシ�
     - [カスタムチェックポイントの読み込み](#44-カスタムチェックポイントの読み込み)  
     - [複数ロボットを環境で起動する](#45-複数ロボットを環境で起動する)  
     - [Yolo 設定の変更](#46-yolo-設定の変更)  
-6. [MCP LLM とウェブポータルの利用方法](#5-mcp-llm-とウェブポータルの利用方法)  
-7. [謝辞](#6-謝辞)  
-8. [引用](#7-引用)  
-9. [連絡先](#8-連絡先)
+5. [MCP LLM とウェブポータルの利用方法](#5-mcp-llm-とウェブポータルの利用方法)  
+6. [謝辞](#6-謝辞)  
+
 
 ---
 
@@ -175,8 +174,6 @@ Yolo モデルは [yolo](<yolo>) フォルダに配置する必要がありま�
 Go2 コントローラは [go2_omniverse](https://github.com/abizovnuralem/go2_omniverse) に実装された RL コントローラに基づいています。
 
 MCP コントロールは [ros-mcp-server](https://github.com/lpigeon/ros-mcp-server) に基づいています。
-
-本研究は [Toyota-Boshoku](https://www.toyota-boshoku.com/) の支援を受けています。
 
 ## 7. 引用
 ```
