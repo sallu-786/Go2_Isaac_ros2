@@ -155,7 +155,7 @@ rviz2 -d go2.rviz         #use spot.rviz for spot
 
 フラットおよびラフ地形向けの事前学習済みモデル（ポリシーファイル）は `ckpts/unitree_go2` フォルダにあります。独自のポリシーをロードしたい場合は、ファイルをフォルダに置き、[go2_ctrl_cfg.py](<go2/go2_ctrl_cfg.py>)/[spot_ctrl_cfg.py](<quadruped/spot/spot_ctrl.py>) の `load_checkpoint` の値を変更してください。
 
-### 4.5 環境内で複数ロボットを起動する
+### 4.5 複数ロボットを環境で起動する
 このリポジトリは複数の Unitree Go2 ロボットの実行をサポートしており、ロボット数は設定ファイル [sim.yaml](<cfg/sim.yaml>) の `num_envs` パラメータで変更できます。
 
 ### 4.6 Yolo 設定の変更
