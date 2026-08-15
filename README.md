@@ -164,12 +164,12 @@ work is supported by [Toyota-Boshoku](https://www.toyota-boshoku.com/)
 
 ## 7. Citation
 ```
-@MISC{Suleman2025,
+@MISC{Suleman2026,
   author = "Muhammad Suleman",
-  title = "Unitree Go2 in Isaac-Sim",
-  year = "2025",
+  title = "Unitree Go2 in Isaac-Sim6",
+  year = "2026",
   url = "https://github.com/sallu-786/Go2_Isaac_ros2",
-  note = "Version 1.2.1"
+  note = "Version 2.0.0"
 }
 ```
 ## 8. Contact
