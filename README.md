@@ -1,24 +1,14 @@
 #  Isaac Sim Unitree Go2/Spot ROS2
-[![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://docs.python.org/3/whatsnew/3.10.html)
-[![ROS2](https://img.shields.io/badge/ROS2-Humble-orange.svg)](https://docs.ros.org/en/humble/index.html)
-[![IsaacSim](https://img.shields.io/badge/IsaacSim-4.5.0-red.svg)](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/index.html)
-[![IsaacLab](https://img.shields.io/badge/IsaacLab-2.1.1-purple.svg)](https://isaac-sim.github.io/IsaacLab/main/index.html)
-[![Linux platform](https://img.shields.io/badge/platform-Ubuntu--22.04-green.svg)](https://releases.ubuntu.com/22.04/)
+[![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://docs.python.org/3/whatsnew/3.12.html)
+[![ROS2](https://img.shields.io/badge/ROS2-Jazzy-orange.svg)](https://docs.ros.org/en/jazzy/index.html)
+[![IsaacSim](https://img.shields.io/badge/IsaacSim-6.0.1-red.svg)](https://docs.isaacsim.omniverse.nvidia.com/6.0.1/index.html)
+[![IsaacLab](https://img.shields.io/badge/IsaacLab-3.0.0-purple.svg)](https://isaac-sim.github.io/IsaacLab/main/index.html)
+[![Linux platform](https://img.shields.io/badge/platform-Ubuntu--24.04-green.svg)](https://releases.ubuntu.com/24.04/)
 
-Welcome to Unitree Go2 Simulation repository for Isaac-Sim(4.5.0) and IsaacLab(2.1.0-1). This repository has been updated to make use of latest Nvidia libraries using [Migration Guide](https://isaac-sim.github.io/IsaacLab/main/source/migration/migrating_from_orbit.html) and tested on multiple devices. 
-
+Welcome to Unitree Go2 Simulation repository for Isaac-Sim(6.0.1) and IsaacLab(3.0.0). 
 <img src="media/intro.gif" width="1000"/> 
 
 
-## Update: 
-- Isaac-Sim 5.0.0 and IsaacLab 2.2.0 support ```Python 3.11```. However, Ubuntu 22.04 with ROS Humble uses ```Python 3.10```, and Ubuntu 24.04 with ROS2 Jazzy is ```Python 3.12``` based. This leads to rclpy errors. [read bug report](https://github.com/isaac-sim/IsaacLab/issues/3129)
-
-- Spot has also been added to the repository. You can now use both Spot and Go2 with full features
-- ros-mcp-server has been updated for easier integration with any type of robot.  (
-  **Note:** my implementation is different from source repository. For details check [acknowledgment](#6-acknowledgement)
-- further updates in ros-mcp-server that includes a web portal making it super easy to go through ros topics and services with Graph based visualization for details check [MCP LLM and Web Portal Usage](#5-mcp-llm-and-web-portal-usage) 
-  
----
 
 ## Table of Contents
 1. [Installation Guide](#1-installation-guide)  
