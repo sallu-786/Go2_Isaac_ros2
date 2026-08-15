@@ -42,7 +42,7 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(6.0.1) and IsaacLab(3
 
 **Step III:** Clone this repo to your local directory.
 ```
-git clone https://github.com/sallu-786/Go2_Isaac_ros2/
+git clone -b isaacsim-6 https://github.com/sallu-786/Go2_Isaac_ros2.git
 ```
 
 **Step IV:** Install Dependencies for computer vision tasks
