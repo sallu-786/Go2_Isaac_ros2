@@ -5,7 +5,10 @@
 [![IsaacLab](https://img.shields.io/badge/IsaacLab-3.0.0-purple.svg)](https://isaac-sim.github.io/IsaacLab/release/3.0.0-beta2/index.html)
 [![Linux platform](https://img.shields.io/badge/platform-Ubuntu--24.04-green.svg)](https://releases.ubuntu.com/24.04/)
 
+
 Welcome to Unitree Go2 Simulation repository for Isaac-Sim(6.0.1) and IsaacLab(3.0.0). 
+
+
 <img src="media/intro.gif" width="1000"/> 
 
 
@@ -52,7 +55,7 @@ pip install -r requirements.txt
 To run the simulation, please use the following command:
 ```
 cd ~/Go2_Isaac_ros2
-python main.py
+python main.py --viz=kit #you may also use reurn or newton
 ```
 Once the simulation is loaded, the robot can be teleoperated by the keyboard:
 
