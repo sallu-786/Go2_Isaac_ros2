@@ -2,7 +2,7 @@
 [![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://docs.python.org/3/whatsnew/3.12.html)
 [![ROS2](https://img.shields.io/badge/ROS2-Jazzy-orange.svg)](https://docs.ros.org/en/jazzy/index.html)
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-6.0.1-red.svg)](https://docs.isaacsim.omniverse.nvidia.com/6.0.1/index.html)
-[![IsaacLab](https://img.shields.io/badge/IsaacLab-3.0.0-purple.svg)](https://isaac-sim.github.io/IsaacLab/main/index.html)
+[![IsaacLab](https://img.shields.io/badge/IsaacLab-3.0.0-purple.svg)](https://isaac-sim.github.io/IsaacLab/release/3.0.0-beta2/index.html)
 [![Linux platform](https://img.shields.io/badge/platform-Ubuntu--24.04-green.svg)](https://releases.ubuntu.com/24.04/)
 
 Welcome to Unitree Go2 Simulation repository for Isaac-Sim(6.0.1) and IsaacLab(3.0.0). 
@@ -33,25 +33,18 @@ Welcome to Unitree Go2 Simulation repository for Isaac-Sim(6.0.1) and IsaacLab(3
 ---
 
 ## 1. Installation Guide
-**Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab//v2.1.1/source/setup/installation/index.html) to install the latest Isaac Sim and Isaac Lab.
+**Step I:** Please follow the [Isaac Lab official documentation](https://isaac-sim.github.io/IsaacLab/release/3.0.0-beta2/index.html) to install the latest Isaac Sim and Isaac Lab.
 
-**Step II:** Please install [ROS2 Humble](https://docs.ros.org/en/humble/index.html) with the official installation guide.
+**Step II:** Please install [ROS2 Jazzy](https://docs.ros.org/en/jazzy/index.html) with the official installation guide.
 
-**Step III:** Install the prerequisite C extension in the conda environment. 
-```
-# Assuming you are using default conda env name from IsaacLab (env_isaaclab)
-conda activate env_isaaclab     
-conda install -c conda-forge libstdcxx-ng
-```
-
-**Step IV:** Clone this repo to your local directory.
+**Step III:** Clone this repo to your local directory.
 ```
 git clone https://github.com/sallu-786/Go2_Isaac_ros2/
 ```
 
-**Step V:** Install Dependencies for computer vision tasks
+**Step IV:** Install Dependencies for computer vision tasks
 ```
-conda activate env_isaaclab  
+source env_isaaclab/bin/activate  
 pip install -r requirements.txt
 ```
 
